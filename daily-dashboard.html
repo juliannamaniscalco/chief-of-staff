@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Chief of Staff">
+  <title>Daily Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f3f0;
+      min-height: 100vh;
+      padding: 20px;
+      color: #3d3d3d;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      color: #3d3d3d;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #2d2d2d;
+    }
+
+    .header .date {
+      font-size: 1rem;
+      color: #6b6b6b;
+      margin-top: 4px;
+    }
+
+    .header .note {
+      font-size: 0.85rem;
+      color: #8b7355;
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .card h2 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #8b7355;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    .task {
+      display: flex;
+      align-items: flex-start;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .task:last-child {
+      border-bottom: none;
+    }
+
+    .task input[type="checkbox"] {
+      width: 22px;
+      height: 22px;
+      margin-right: 12px;
+      flex-shrink: 0;
+      accent-color: #8b7355;
+    }
+
+    .task label {
+      font-size: 1rem;
+      line-height: 1.4;
+      cursor: pointer;
+    }
+
+    .task.checked label {
+      text-decoration: line-through;
+      opacity: 0.5;
+    }
+
+    .task .time {
+      font-size: 0.8rem;
+      color: #888;
+      display: block;
+      margin-top: 2px;
+    }
+
+    .priority {
+      background: #e8e4df;
+      border: 2px solid #c9bfb0;
+    }
+
+    .priority h2 {
+      color: #6b5a45;
+    }
+
+    .priority .task {
+      border-bottom-color: #d4cdc3;
+    }
+
+    .priority label {
+      color: #3d3d3d;
+      font-weight: 500;
+    }
+
+    .priority .time {
+      color: #7a7a7a;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .stat {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .stat .number {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #6b5a45;
+    }
+
+    .stat .label {
+      font-size: 0.75rem;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .meal {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .meal:last-child {
+      border-bottom: none;
+    }
+
+    .meal .name {
+      font-weight: 500;
+    }
+
+    .meal .protein {
+      color: #8b7355;
+      font-weight: 600;
+    }
+
+    .footer {
+      text-align: center;
+      color: #8b8b8b;
+      font-size: 0.8rem;
+      margin-top: 20px;
+      padding-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Monday, August 17</h1>
+      <div class="date">Lucianna turns 8 months 🎉</div>
+      <div class="note">Mike away until Thursday — go easy on yourself</div>
+    </div>
+
+    <div class="card priority">
+      <h2>Non-Negotiables</h2>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="nn1">
+        <label for="nn1">20 min Peloton Strength<span class="time">During first nap, before Slack</span></label>
+      </div>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="nn2">
+        <label for="nn2">Hit 100g+ protein</label>
+      </div>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="nn3">
+        <label for="nn3">Evening walk with Lucianna<span class="time">15-30 min, stroller</span></label>
+      </div>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="nn4">
+        <label for="nn4">Offline by 5pm</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Morning</h2>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="m1">
+        <label for="m1">Wake, feed Lucianna<span class="time">6:30-7:30am</span></label>
+      </div>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="m2">
+        <label for="m2">Bring her downstairs, play</label>
+      </div>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="m3">
+        <label for="m3">Breakfast for you + Lucianna</label>
+      </div>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="m4">
+        <label for="m4">Lucianna down for first nap<span class="time">~9-10am</span></label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Midday</h2>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="d1">
+        <label for="d1">Work block</label>
+      </div>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="d2">
+        <label for="d2">Lucianna second nap<span class="time">~1-2pm</span></label>
+      </div>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="d3">
+        <label for="d3">Protein lunch</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Evening</h2>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="e1">
+        <label for="e1">Finish work<span class="time">by 5pm</span></label>
+      </div>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="e2">
+        <label for="e2">Walk with Lucianna</label>
+      </div>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="e3">
+        <label for="e3">Dinner</label>
+      </div>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="e4">
+        <label for="e4">Bookmark tomorrow's Peloton class</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Today's Meals</h2>
+      <div class="meal">
+        <span class="name">Breakfast: Eggs + turkey sausage</span>
+        <span class="protein">30g</span>
+      </div>
+      <div class="meal">
+        <span class="name">Lunch: Chicken salad</span>
+        <span class="protein">35g</span>
+      </div>
+      <div class="meal">
+        <span class="name">Dinner: Sheet pan chicken</span>
+        <span class="protein">35g</span>
+      </div>
+      <div class="meal">
+        <span class="name">Snacks: Yogurt + cheese</span>
+        <span class="protein">20g</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Targets</h2>
+      <div class="stats">
+        <div class="stat">
+          <div class="number">120g</div>
+          <div class="label">Protein</div>
+        </div>
+        <div class="stat">
+          <div class="number">7k</div>
+          <div class="label">Steps</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      You've got this. One task at a time.
+    </div>
+  </div>
+
+  <script>
+    function toggleTask(taskEl) {
+      const checkbox = taskEl.querySelector('input[type="checkbox"]');
+      checkbox.checked = !checkbox.checked;
+      taskEl.classList.toggle('checked', checkbox.checked);
+      saveState();
+    }
+
+    function saveState() {
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      const state = {};
+      checkboxes.forEach(cb => {
+        state[cb.id] = cb.checked;
+      });
+      localStorage.setItem('dashboard-2024-08-17', JSON.stringify(state));
+    }
+
+    function loadState() {
+      const saved = localStorage.getItem('dashboard-2024-08-17');
+      if (saved) {
+        const state = JSON.parse(saved);
+        Object.keys(state).forEach(id => {
+          const cb = document.getElementById(id);
+          if (cb) {
+            cb.checked = state[id];
+            cb.closest('.task').classList.toggle('checked', state[id]);
+          }
+        });
+      }
+    }
+
+    loadState();
+  </script>
+</body>
+</html>

@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Chief of Staff">
+  <title>Chief of Staff</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f3f0;
+      min-height: 100vh;
+      padding: 20px 20px 100px 20px;
+      color: #3d3d3d;
+    }
+    .header { text-align: center; margin-bottom: 20px; }
+    .header h1 { font-size: 1.5rem; font-weight: 600; color: #2d2d2d; }
+    .header .subtitle { font-size: 0.9rem; color: #6b6b6b; margin-top: 4px; }
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .card h2 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #8b7355;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+    .task {
+      display: flex;
+      align-items: flex-start;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+      cursor: pointer;
+    }
+    .task:last-child { border-bottom: none; }
+    .task input[type="checkbox"] {
+      width: 22px;
+      height: 22px;
+      margin-right: 12px;
+      flex-shrink: 0;
+      accent-color: #8b7355;
+    }
+    .task label { font-size: 1rem; line-height: 1.4; cursor: pointer; flex: 1; }
+    .task.checked label { text-decoration: line-through; opacity: 0.5; }
+    .task .time { font-size: 0.8rem; color: #888; display: block; margin-top: 2px; }
+    .nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      display: flex;
+      justify-content: space-around;
+      padding: 12px 0 28px 0;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.7rem;
+      color: #888;
+      cursor: pointer;
+      padding: 4px 12px;
+    }
+    .nav-item.active { color: #8b7355; }
+    .nav-item svg { width: 24px; height: 24px; margin-bottom: 4px; }
+    .page { display: none; }
+    .page.active { display: block; }
+    .priority { background: #e8e4df; border: 2px solid #c9bfb0; }
+    .priority h2 { color: #6b5a45; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .stat {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 16px 8px;
+      text-align: center;
+    }
+    .stat .number { font-size: 1.5rem; font-weight: 700; color: #6b5a45; }
+    .stat .label { font-size: 0.7rem; color: #666; text-transform: uppercase; }
+    .progress-bar {
+      height: 8px;
+      background: #e8e4df;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-fill { height: 100%; background: #8b7355; border-radius: 4px; }
+    .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+    .day-box {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 8px;
+      text-align: center;
+      font-size: 0.75rem;
+    }
+    .day-box.today { background: #e8e4df; border: 2px solid #c9bfb0; }
+    .day-box .day-name { font-weight: 600; color: #6b5a45; }
+    .day-box .day-num { color: #888; }
+    .backlog-item {
+      padding: 12px 0;
+      border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .backlog-item:last-child { border-bottom: none; }
+    .backlog-item .title { font-weight: 500; }
+    .backlog-item .meta { font-size: 0.8rem; color: #888; }
+    .tag {
+      font-size: 0.65rem;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: #e8e4df;
+      color: #6b5a45;
+    }
+    .tag.home { background: #d4e5d4; color: #3d5a3d; }
+    .tag.family { background: #e0d4e5; color: #5a3d5a; }
+    .tag.health { background: #d4e0e5; color: #3d4a5a; }
+    .tag.work { background: #e5e0d4; color: #5a4a3d; }
+    .tag.hobby { background: #e5d4d4; color: #5a3d3d; }
+    .tag.systems { background: #d4d4e5; color: #3d3d5a; }
+  </style>
+</head>
+<body>
+  <!-- Pages will be added here -->
+  <div id="page-today" class="page active">
+    <div class="header">
+      <h1>Monday, August 17</h1>
+      <div class="subtitle">Lucianna turns 8 months</div>
+    </div>
+
+    <div class="card priority" style="background:#fff3cd;border-color:#e0c36a;">
+      <h2 style="color:#8a6d3b;">Appointments</h2>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="apt1">
+        <label>Lucianna's 8 month pediatrician visit<span class="time">9:00 AM</span></label>
+      </div>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="apt2">
+        <label>Take Lucianna's 8 month pictures</label>
+      </div>
+    </div>
+
+    <div class="card priority">
+      <h2>Non-Negotiables</h2>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="nn1">
+        <label>20 min Peloton Strength<span class="time">After pediatrician or during second nap</span></label>
+      </div>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="nn2">
+        <label>Hit 100g+ protein</label>
+      </div>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="nn3">
+        <label>Evening walk with Lucianna<span class="time">15-30 min</span></label>
+      </div>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="nn4">
+        <label>Offline by 5pm</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Morning</h2>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="m1">
+        <label>Feed Lucianna<span class="time">6:30-7:30am</span></label>
+      </div>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="m2">
+        <label>Breakfast for you + Lucianna</label>
+      </div>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="m3">
+        <label>Lucianna down for first nap<span class="time">~9-10am</span></label>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="card" style="margin-bottom:0;">
+        <h2>AM Skincare</h2>
+        <div class="task" onclick="toggleTask(this)">
+          <input type="checkbox" id="sk1">
+          <label>Wash face</label>
+        </div>
+        <div class="task" onclick="toggleTask(this)">
+          <input type="checkbox" id="sk2">
+          <label>Moisturizer</label>
+        </div>
+        <div class="task" onclick="toggleTask(this)">
+          <input type="checkbox" id="sk3">
+          <label>Sunblock</label>
+        </div>
+        <div class="task" onclick="toggleTask(this)">
+          <input type="checkbox" id="sk4">
+          <label>Brush teeth</label>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:0;">
+        <h2>PM Skincare</h2>
+        <div class="task" onclick="toggleTask(this)">
+          <input type="checkbox" id="esk1">
+          <label>Wash face</label>
+        </div>
+        <div class="task" onclick="toggleTask(this)">
+          <input type="checkbox" id="esk2">
+          <label>Caudalie serum</label>
+        </div>
+        <div class="task" onclick="toggleTask(this)">
+          <input type="checkbox" id="esk3">
+          <label>Moisturizer</label>
+        </div>
+        <div class="task" onclick="toggleTask(this)">
+          <input type="checkbox" id="esk4">
+          <label>Gua sha</label>
+        </div>
+        <div class="task" onclick="toggleTask(this)">
+          <input type="checkbox" id="esk5">
+          <label>Brush teeth</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Meals</h2>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="meal1">
+        <label>Breakfast: Eggs + turkey sausage<span class="time">30g protein</span></label>
+      </div>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="meal2">
+        <label>Lunch: Chicken salad<span class="time">35g protein</span></label>
+      </div>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="meal3">
+        <label>Dinner: Sheet pan chicken<span class="time">35g protein</span></label>
+      </div>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="meal4">
+        <label>Snacks: Yogurt + cheese<span class="time">20g protein</span></label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Quick Wins</h2>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="qw1">
+        <label>Put Lucianna's Easter basket away<span class="time">5 min</span></label>
+      </div>
+    </div>
+
+      </div>
+  <div id="page-week" class="page">
+    <div class="header">
+      <h1>This Week</h1>
+      <div class="subtitle">Aug 17 - 23</div>
+    </div>
+
+    <div class="card">
+      <h2>Week at a Glance</h2>
+      <div class="week-grid">
+        <div class="day-box today"><div class="day-name">Mon</div><div class="day-num">17</div></div>
+        <div class="day-box"><div class="day-name">Tue</div><div class="day-num">18</div></div>
+        <div class="day-box"><div class="day-name">Wed</div><div class="day-num">19</div></div>
+        <div class="day-box"><div class="day-name">Thu</div><div class="day-num">20</div></div>
+        <div class="day-box"><div class="day-name">Fri</div><div class="day-num">21</div></div>
+        <div class="day-box"><div class="day-name">Sat</div><div class="day-num">22</div></div>
+        <div class="day-box"><div class="day-name">Sun</div><div class="day-num">23</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Note</h2>
+      <p style="color:#8b7355;font-style:italic;">Mike away until Thursday — go easy on yourself</p>
+    </div>
+
+    <div class="card">
+      <h2>Workouts This Week</h2>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="wo1">
+        <label>Mon: Strength (Full Body)<span class="time">20 min</span></label>
+      </div>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="wo2">
+        <label>Tue: Strength (Upper Body)<span class="time">20 min</span></label>
+      </div>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="wo3">
+        <label>Wed: Low Impact Ride<span class="time">20 min</span></label>
+      </div>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="wo4">
+        <label>Thu: Strength (Core)<span class="time">20 min</span></label>
+      </div>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="wo5">
+        <label>Fri: Yoga or Stretch<span class="time">20 min</span></label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Recurring</h2>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="rec1">
+        <label>Wash and change sheets</label>
+      </div>
+      <div class="task" onclick="toggleTask(this)">
+        <input type="checkbox" id="rec2">
+        <label>Sunday batch prep<span class="time">Aug 23</span></label>
+      </div>
+    </div>
+  </div>
+  <div id="page-progress" class="page">
+    <div class="header">
+      <h1>Progress</h1>
+      <div class="subtitle">Track your wins</div>
+    </div>
+
+    <div class="card">
+      <h2>Habit Tracker — Week of Aug 17</h2>
+      <table style="width:100%;font-size:0.8rem;border-collapse:collapse;">
+        <thead>
+          <tr style="color:#8b7355;">
+            <th style="text-align:left;padding:8px 4px;"></th>
+            <th style="padding:8px 2px;">M</th>
+            <th style="padding:8px 2px;">T</th>
+            <th style="padding:8px 2px;">W</th>
+            <th style="padding:8px 2px;">T</th>
+            <th style="padding:8px 2px;">F</th>
+            <th style="padding:8px 2px;">S</th>
+            <th style="padding:8px 2px;">S</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:8px 4px;">Workout</td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wo-1" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wo-2" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wo-3" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wo-4" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wo-5" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wo-6" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wo-7" style="accent-color:#8b7355;"></td>
+          </tr>
+          <tr>
+            <td style="padding:8px 4px;">Walk</td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wk-1" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wk-2" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wk-3" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wk-4" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wk-5" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wk-6" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wk-7" style="accent-color:#8b7355;"></td>
+          </tr>
+          <tr>
+            <td style="padding:8px 4px;">Water 100oz</td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wa-1" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wa-2" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wa-3" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wa-4" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wa-5" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wa-6" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wa-7" style="accent-color:#8b7355;"></td>
+          </tr>
+          <tr>
+            <td style="padding:8px 4px;">AM Skincare</td>
+            <td style="text-align:center;"><input type="checkbox" id="h-am-1" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-am-2" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-am-3" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-am-4" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-am-5" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-am-6" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-am-7" style="accent-color:#8b7355;"></td>
+          </tr>
+          <tr>
+            <td style="padding:8px 4px;">PM Skincare</td>
+            <td style="text-align:center;"><input type="checkbox" id="h-pm-1" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-pm-2" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-pm-3" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-pm-4" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-pm-5" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-pm-6" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-pm-7" style="accent-color:#8b7355;"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Workout Streak</h2>
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+        <span style="font-size:0.85rem;">Week 1 of 4</span>
+        <span style="font-size:0.85rem;color:#8b7355;">0/5 days</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Weight Tracker</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div>
+          <label style="font-size:0.75rem;color:#888;">Starting Weight</label>
+          <input type="number" id="weight-start" placeholder="lbs" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;font-size:1rem;margin-top:4px;" onchange="updateWeight()">
+        </div>
+        <div>
+          <label style="font-size:0.75rem;color:#888;">Current Weight</label>
+          <input type="number" id="weight-current" placeholder="lbs" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;font-size:1rem;margin-top:4px;" onchange="updateWeight()">
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+        <span style="font-size:0.85rem;">Progress</span>
+        <span style="font-size:0.85rem;color:#8b7355;" id="weight-progress">0 / 50 lbs lost</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="weight-bar" style="width:0%"></div>
+      </div>
+      <p style="font-size:0.75rem;color:#888;margin-top:8px;">Update weekly — same day, same time</p>
+    </div>
+
+    <div class="card">
+      <h2>Daily Targets</h2>
+      <div class="backlog-item">
+        <div>
+          <div class="title">Protein</div>
+          <div class="meta">100-120g per day</div>
+        </div>
+        <span class="tag">Daily</span>
+      </div>
+      <div class="backlog-item">
+        <div>
+          <div class="title">Steps</div>
+          <div class="meta">7,000 per day</div>
+        </div>
+        <span class="tag">Daily</span>
+      </div>
+      <div class="backlog-item">
+        <div>
+          <div class="title">Water</div>
+          <div class="meta">100oz per day</div>
+        </div>
+        <span class="tag">Daily</span>
+      </div>
+    </div>
+  </div>
+  <div id="page-backlog" class="page">
+    <div class="header">
+      <h1>Backlog</h1>
+      <div class="subtitle">Everything in one place</div>
+    </div>
+
+    <div class="card">
+      <h2>Quick Wins</h2>
+      <div class="backlog-item">
+        <div>
+          <div class="title">Put Lucianna's Easter basket away</div>
+          <div class="meta">5 min</div>
+        </div>
+        <span class="tag home">Home</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Up Next</h2>
+      <div class="backlog-item">
+        <div>
+          <div class="title">Lucianna's weekly meal plan</div>
+          <div class="meta">1-2 hrs to plan</div>
+        </div>
+        <span class="tag family">Family</span>
+      </div>
+      <div class="backlog-item">
+        <div>
+          <div class="title">Cleaning schedule</div>
+          <div class="meta">30 min to plan</div>
+        </div>
+        <span class="tag home">Home</span>
+      </div>
+      <div class="backlog-item">
+        <div>
+          <div class="title">Daily checklist system</div>
+          <div class="meta">30 min to set up</div>
+        </div>
+        <span class="tag systems">Systems</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>This Month</h2>
+      <div class="backlog-item">
+        <div>
+          <div class="title">Sunday batch prep (first one)</div>
+          <div class="meta">Aug 23</div>
+        </div>
+        <span class="tag health">Health</span>
+      </div>
+      <div class="backlog-item">
+        <div>
+          <div class="title">Plan Lucianna's 1st birthday</div>
+          <div class="meta">Start venue/theme</div>
+        </div>
+        <span class="tag family">Family</span>
+      </div>
+      <div class="backlog-item">
+        <div>
+          <div class="title">Declutter and organize room</div>
+          <div class="meta">2 hrs</div>
+        </div>
+        <span class="tag home">Home</span>
+      </div>
+      <div class="backlog-item">
+        <div>
+          <div class="title">Declutter and organize office</div>
+          <div class="meta">2 hrs</div>
+        </div>
+        <span class="tag home">Home</span>
+      </div>
+      <div class="backlog-item">
+        <div>
+          <div class="title">Declutter bedroom closet</div>
+          <div class="meta">2 hrs</div>
+        </div>
+        <span class="tag home">Home</span>
+      </div>
+      <div class="backlog-item">
+        <div>
+          <div class="title">Declutter basement</div>
+          <div class="meta">3-4 hrs</div>
+        </div>
+        <span class="tag home">Home</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>This Quarter</h2>
+      <div class="backlog-item">
+        <div>
+          <div class="title">Plan a family trip</div>
+          <div class="meta">Even a weekend getaway</div>
+        </div>
+        <span class="tag family">Family</span>
+      </div>
+      <div class="backlog-item">
+        <div>
+          <div class="title">Photography project</div>
+          <div class="meta">Pick one, don't overthink</div>
+        </div>
+        <span class="tag hobby">Hobby</span>
+      </div>
+      <div class="backlog-item">
+        <div>
+          <div class="title">Management prep</div>
+          <div class="meta">Discuss timeline with boss</div>
+        </div>
+        <span class="tag work">Work</span>
+      </div>
+    </div>
+  </div>
+
+  <nav class="nav">
+    <div class="nav-item active" onclick="showPage('today')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+      Today
+    </div>
+    <div class="nav-item" onclick="showPage('week')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      Week
+    </div>
+    <div class="nav-item" onclick="showPage('progress')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+      Progress
+    </div>
+    <div class="nav-item" onclick="showPage('backlog')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+      Backlog
+    </div>
+  </nav>
+
+  <script>
+    function showPage(page) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.getElementById('page-' + page).classList.add('active');
+      document.querySelector('.nav-item[onclick*="' + page + '"]').classList.add('active');
+    }
+    function toggleTask(el) {
+      const cb = el.querySelector('input[type="checkbox"]');
+      cb.checked = !cb.checked;
+      el.classList.toggle('checked', cb.checked);
+      saveState();
+    }
+    function saveState() {
+      const state = {};
+      document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        if (cb.id) state[cb.id] = cb.checked;
+      });
+      localStorage.setItem('dashboard-state', JSON.stringify(state));
+    }
+    function loadState() {
+      const saved = localStorage.getItem('dashboard-state');
+      if (saved) {
+        const state = JSON.parse(saved);
+        Object.keys(state).forEach(id => {
+          const cb = document.getElementById(id);
+          if (cb) {
+            cb.checked = state[id];
+            const task = cb.closest('.task');
+            if (task) task.classList.toggle('checked', state[id]);
+          }
+        });
+      }
+    }
+    function updateWeight() {
+      const start = parseFloat(document.getElementById('weight-start').value) || 0;
+      const current = parseFloat(document.getElementById('weight-current').value) || 0;
+      const lost = start - current;
+      const goal = 50;
+      const percent = Math.min(100, Math.max(0, (lost / goal) * 100));
+      document.getElementById('weight-progress').textContent = lost.toFixed(1) + ' / ' + goal + ' lbs lost';
+      document.getElementById('weight-bar').style.width = percent + '%';
+      localStorage.setItem('weight-start', start);
+      localStorage.setItem('weight-current', current);
+    }
+    function loadWeight() {
+      const start = localStorage.getItem('weight-start');
+      const current = localStorage.getItem('weight-current');
+      if (start) document.getElementById('weight-start').value = start;
+      if (current) document.getElementById('weight-current').value = current;
+      updateWeight();
+    }
+    document.addEventListener('DOMContentLoaded', () => { loadState(); loadWeight(); });
+  </script>
+</body>
+</html>
