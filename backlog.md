@@ -11,6 +11,7 @@ Everything that needs doing, in one place. Review weekly. Pick 1-2 to focus on.
 | Morning workout habit | Started | 4-week Peloton plan, M-F during first nap |
 | Protein meal plan | Started | Batch prep Sundays, recipes linked |
 | Daily dashboard | Built | HTML app for phone |
+| Lucianna's meal plan | Started | Recipes + weekly template created |
 
 ---
 
@@ -26,7 +27,6 @@ Everything that needs doing, in one place. Review weekly. Pick 1-2 to focus on.
 
 | Task | Why It Matters | Time Estimate |
 |------|----------------|---------------|
-| Lucianna's weekly meal plan | She's on solids, need freezer stash for weekdays | 1-2 hrs to plan |
 | Cleaning schedule | Keeps getting pushed, need actionable plan | 30 min to plan |
 | Daily checklist system | Tie together workout, cleaning, work priorities | 30 min to set up |
 
