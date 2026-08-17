@@ -17,8 +17,8 @@
       color: #3d3d3d;
     }
     .header { text-align: center; margin-bottom: 20px; }
-    .header h1 { font-size: 1.5rem; font-weight: 600; color: #2d2d2d; }
-    .header .subtitle { font-size: 0.9rem; color: #6b6b6b; margin-top: 4px; }
+    .header h1 { font-size: 1.5rem; font-weight: 600; color: #5976AC; }
+    .header .subtitle { font-size: 0.9rem; color: #A89F93; margin-top: 4px; }
     .card {
       background: white;
       border-radius: 16px;
@@ -38,7 +38,7 @@
       display: flex;
       align-items: flex-start;
       padding: 10px 0;
-      border-bottom: 1px solid #f0f0f0;
+      border-bottom: 1px solid #C1DBE8;
       cursor: pointer;
     }
     .task:last-child { border-bottom: none; }
@@ -51,7 +51,7 @@
     }
     .task label { font-size: 1rem; line-height: 1.4; cursor: pointer; flex: 1; }
     .task.checked label { text-decoration: line-through; opacity: 0.5; }
-    .task .time { font-size: 0.8rem; color: #888; display: block; margin-top: 2px; }
+    .task .time { font-size: 0.8rem; color: #A89F93; display: block; margin-top: 2px; }
     .nav {
       position: fixed;
       bottom: 0;
@@ -68,7 +68,7 @@
       flex-direction: column;
       align-items: center;
       font-size: 0.7rem;
-      color: #888;
+      color: #A89F93;
       cursor: pointer;
       padding: 4px 12px;
     }
@@ -80,13 +80,13 @@
     .priority h2 { color: #5976AC; }
     .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
     .stat {
-      background: #f8f9fa;
+      background: #C1DBE8;
       border-radius: 12px;
       padding: 16px 8px;
       text-align: center;
     }
     .stat .number { font-size: 1.5rem; font-weight: 700; color: #5976AC; }
-    .stat .label { font-size: 0.7rem; color: #666; text-transform: uppercase; }
+    .stat .label { font-size: 0.7rem; color: #5976AC; text-transform: uppercase; }
     .progress-bar {
       height: 8px;
       background: #C1DBE8;
@@ -97,7 +97,7 @@
     .progress-fill { height: 100%; background: #C18041; border-radius: 4px; }
     .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
     .day-box {
-      background: #f8f9fa;
+      background: white;
       border-radius: 8px;
       padding: 8px;
       text-align: center;
@@ -105,17 +105,17 @@
     }
     .day-box.today { background: #C1DBE8; border: 2px solid #9BB9E0; }
     .day-box .day-name { font-weight: 600; color: #5976AC; }
-    .day-box .day-num { color: #888; }
+    .day-box .day-num { color: #A89F93; }
     .backlog-item {
       padding: 12px 0;
-      border-bottom: 1px solid #f0f0f0;
+      border-bottom: 1px solid #C1DBE8;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
     .backlog-item:last-child { border-bottom: none; }
     .backlog-item .title { font-weight: 500; }
-    .backlog-item .meta { font-size: 0.8rem; color: #888; }
+    .backlog-item .meta { font-size: 0.8rem; color: #A89F93; }
     .tag {
       font-size: 0.65rem;
       padding: 2px 8px;
@@ -139,8 +139,8 @@
       <div class="subtitle">Lucianna turns 8 months</div>
     </div>
 
-    <div class="card priority" style="background:#fff3cd;border-color:#e0c36a;">
-      <h2 style="color:#8a6d3b;">Appointments</h2>
+    <div class="card priority" style="background:#C18041;border-color:#A89F93;">
+      <h2 style="color:#F4F1E8;">Appointments</h2>
       <div class="task" onclick="toggleTask(this)">
         <input type="checkbox" id="apt1">
         <label>Lucianna's 8 month pediatrician visit<span class="time">9:00 AM</span></label>
