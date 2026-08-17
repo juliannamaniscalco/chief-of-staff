@@ -103,7 +103,8 @@
       text-align: center;
       font-size: 0.75rem;
     }
-    .day-box.today { background: #C1DBE8; border: 2px solid #9BB9E0; }
+    .day-box { cursor: pointer; }
+    .day-box.selected { background: #C1DBE8; border: 2px solid #9BB9E0; }
     .day-box .day-name { font-weight: 600; color: #5976AC; }
     .day-box .day-num { color: #A89F93; }
     .backlog-item {
@@ -270,13 +271,22 @@
     <div class="card">
       <h2>Week at a Glance</h2>
       <div class="week-grid">
-        <div class="day-box today"><div class="day-name">Mon</div><div class="day-num">17</div></div>
-        <div class="day-box"><div class="day-name">Tue</div><div class="day-num">18</div></div>
-        <div class="day-box"><div class="day-name">Wed</div><div class="day-num">19</div></div>
-        <div class="day-box"><div class="day-name">Thu</div><div class="day-num">20</div></div>
-        <div class="day-box"><div class="day-name">Fri</div><div class="day-num">21</div></div>
-        <div class="day-box"><div class="day-name">Sat</div><div class="day-num">22</div></div>
-        <div class="day-box"><div class="day-name">Sun</div><div class="day-num">23</div></div>
+        <div class="day-box selected" onclick="selectDay('mon')"><div class="day-name">Mon</div><div class="day-num">17</div></div>
+        <div class="day-box" onclick="selectDay('tue')"><div class="day-name">Tue</div><div class="day-num">18</div></div>
+        <div class="day-box" onclick="selectDay('wed')"><div class="day-name">Wed</div><div class="day-num">19</div></div>
+        <div class="day-box" onclick="selectDay('thu')"><div class="day-name">Thu</div><div class="day-num">20</div></div>
+        <div class="day-box" onclick="selectDay('fri')"><div class="day-name">Fri</div><div class="day-num">21</div></div>
+        <div class="day-box" onclick="selectDay('sat')"><div class="day-name">Sat</div><div class="day-num">22</div></div>
+        <div class="day-box" onclick="selectDay('sun')"><div class="day-name">Sun</div><div class="day-num">23</div></div>
+      </div>
+    </div>
+
+    <div class="card" id="day-detail">
+      <h2 id="day-detail-title">Monday, Aug 17</h2>
+      <div id="day-detail-content">
+        <p style="color:#C18041;font-weight:500;margin-bottom:8px;">9am: Lucianna's pediatrician visit</p>
+        <p style="margin-bottom:8px;"><strong>Workout:</strong> Beginner Full Body Strength · Adrian Williams</p>
+        <p style="color:#A89F93;font-style:italic;">Mike away</p>
       </div>
     </div>
 
@@ -640,6 +650,21 @@
       if (start) document.getElementById('weight-start').value = start;
       if (current) document.getElementById('weight-current').value = current;
       updateWeight();
+    }
+    const dayData = {
+      mon: { title: 'Monday, Aug 17', content: '<p style="color:#C18041;font-weight:500;margin-bottom:8px;">9am: Lucianna\'s pediatrician visit</p><p style="margin-bottom:8px;"><strong>Workout:</strong> Beginner Full Body Strength · Adrian Williams</p><p style="color:#A89F93;font-style:italic;">Mike away · Take 8mo pictures</p>' },
+      tue: { title: 'Tuesday, Aug 18', content: '<p style="margin-bottom:8px;"><strong>Workout:</strong> Upper Body Strength · Robin Arzón</p><p style="color:#A89F93;font-style:italic;">Mike away</p>' },
+      wed: { title: 'Wednesday, Aug 19', content: '<p style="margin-bottom:8px;"><strong>Workout:</strong> Low Impact Ride · Christine D\'Ercole</p><p style="color:#A89F93;font-style:italic;">Mike away</p>' },
+      thu: { title: 'Thursday, Aug 20', content: '<p style="color:#C18041;font-weight:500;margin-bottom:8px;">PTO — Sesame Place!</p><p style="margin-bottom:8px;"><strong>Workout:</strong> Rest day (walking counts!)</p><p style="color:#5976AC;">Mike is back!</p>' },
+      fri: { title: 'Friday, Aug 21', content: '<p style="margin-bottom:8px;"><strong>Workout:</strong> Beginner Yoga · Aditi Shah</p><p style="color:#A89F93;font-style:italic;">End early (3-4pm)</p>' },
+      sat: { title: 'Saturday, Aug 22', content: '<p style="margin-bottom:8px;"><strong>Flexible day</strong></p><p style="color:#A89F93;">Optional: Declutter session?</p>' },
+      sun: { title: 'Sunday, Aug 23', content: '<p style="color:#C18041;font-weight:500;margin-bottom:8px;">Batch prep day</p><p style="margin-bottom:8px;">Egg muffins, shredded chicken, hard boiled eggs</p><p style="color:#A89F93;">Wash sheets</p>' }
+    };
+    function selectDay(day) {
+      document.querySelectorAll('.day-box').forEach(d => d.classList.remove('selected'));
+      event.currentTarget.classList.add('selected');
+      document.getElementById('day-detail-title').textContent = dayData[day].title;
+      document.getElementById('day-detail-content').innerHTML = dayData[day].content;
     }
     document.addEventListener('DOMContentLoaded', () => { loadState(); loadWeight(); });
   </script>
