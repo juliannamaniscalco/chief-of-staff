@@ -734,6 +734,11 @@
       document.getElementById('water-oz').textContent = oz;
       const pct = Math.min(100, (oz / 100) * 100);
       document.getElementById('water-bar').style.width = pct + '%';
+      const waterCheckbox = document.getElementById('h-wa-1');
+      if (waterCheckbox && oz >= 100) {
+        waterCheckbox.checked = true;
+        saveState();
+      }
     }
     document.addEventListener('DOMContentLoaded', () => {
       loadState();
