@@ -149,7 +149,18 @@
     </div>
     <div class="card">
       <h2>My Meals</h2>
-      <div id="myMeals"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div>
+          <div style="font-size:0.75rem;color:#718BA2;margin-bottom:8px;font-weight:600;">PLANNED</div>
+          <div id="myMeals"></div>
+        </div>
+        <div>
+          <div style="font-size:0.75rem;color:#718BA2;margin-bottom:8px;font-weight:600;">ACTUAL</div>
+          <div id="actualMeals">
+            <textarea id="actualMealsInput" placeholder="What I actually ate..." style="width:100%;min-height:120px;padding:10px;border:1px solid #BDD0E1;border-radius:8px;font-family:inherit;font-size:0.9rem;resize:vertical;" onchange="saveActualMeals()"></textarea>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="card">
       <h2>Lucianna's Meals</h2>
@@ -347,6 +358,10 @@ function createSchema() {
       date TEXT PRIMARY KEY,
       oz INTEGER DEFAULT 0
     );
+    CREATE TABLE actual_meals (
+      date TEXT PRIMARY KEY,
+      content TEXT
+    );
   `);
 }
 
@@ -377,7 +392,7 @@ function seedData() {
     for(let d=0;d<7;d++) db.run('INSERT INTO tasks(title,time_note,category,day_of_week,sort_order)VALUES(?,?,?,?,?)',[t,n,'babyMeals',d,i]);
   });
   // Backlog - Quick Wins
-  [['Put Lucianna Easter basket away','5 min','home','quick'],["Buy Dad birthday gift","Birthday Sat Aug 22",'family','quick'],['Schedule lunch with Dad + Lucianna','Quality time','family','quick']].forEach(([t,m,tag,sec])=>{
+  [['Put Lucianna Easter basket away','5 min','home','quick'],["Buy Dad birthday gift","Birthday Sat Aug 22",'family','quick'],['Schedule lunch with Dad + Lucianna','Quality time','family','quick'],['Get title for car from DMV','','home','quick']].forEach(([t,m,tag,sec])=>{
     db.run('INSERT INTO backlog(title,meta,tag,section)VALUES(?,?,?,?)',[t,m,tag,sec]);
   });
   // Backlog - Up Next
@@ -451,6 +466,7 @@ function renderToday() {
     const tasks = db.exec('SELECT id,title,time_note FROM tasks WHERE category=? AND (day_of_week=? OR specific_date=?) ORDER BY sort_order',[cat,dow,dateStr]);
     el.innerHTML = tasks.length && tasks[0].values.length ? renderTaskList(tasks[0].values, dateStr) : '<div class="empty">None</div>';
   });
+  loadActualMeals();
 }
 function renderTaskList(rows, dateStr) {
   return rows.map(([id,title,timeNote]) => {
@@ -484,6 +500,18 @@ function updateWaterDisplay() {
   const oz = res.length && res[0].values.length ? res[0].values[0][0] : 0;
   document.getElementById('water-oz').textContent = oz;
   document.getElementById('water-bar').style.width = Math.min(100,(oz/100)*100)+'%';
+}
+function saveActualMeals() {
+  const dateStr = formatDate(currentDate);
+  const content = document.getElementById('actualMealsInput').value;
+  db.run('INSERT INTO actual_meals(date,content)VALUES(?,?) ON CONFLICT(date) DO UPDATE SET content=?',[dateStr,content,content]);
+  saveDb();
+}
+function loadActualMeals() {
+  const dateStr = formatDate(currentDate);
+  const res = db.exec('SELECT content FROM actual_meals WHERE date=?',[dateStr]);
+  const content = res.length && res[0].values.length ? res[0].values[0][0] : '';
+  document.getElementById('actualMealsInput').value = content;
 }
 function updateWeight() {
   const start = parseFloat(document.getElementById('weight-start').value)||0;
