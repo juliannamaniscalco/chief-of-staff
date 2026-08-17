@@ -6,338 +6,651 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Chief of Staff">
-  <title>Daily Dashboard</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+  <title>Chief of Staff</title>
+  <script src="https://sql.js.org/dist/sql-wasm.js"></script>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #f5f3f0;
+      background: #F7F3EE url('background.png') repeat;
+      background-size: 300px;
       min-height: 100vh;
-      padding: 20px;
+      padding: 20px 20px 100px 20px;
       color: #3d3d3d;
     }
-
-    .container {
-      max-width: 500px;
-      margin: 0 auto;
-    }
-
-    .header {
-      text-align: center;
-      color: #3d3d3d;
-      margin-bottom: 20px;
-    }
-
-    .header h1 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: #2d2d2d;
-    }
-
-    .header .date {
-      font-size: 1rem;
-      color: #6b6b6b;
-      margin-top: 4px;
-    }
-
-    .header .note {
-      font-size: 0.85rem;
-      color: #8b7355;
-      margin-top: 8px;
-      font-style: italic;
-    }
-
+    .header { text-align: center; margin-bottom: 20px; }
+    .header h1 { font-family: 'Fredoka One', cursive; font-size: 1.6rem; font-weight: 400; color: #718BA2; }
+    .header .subtitle { font-size: 0.9rem; color: #718BA2; margin-top: 4px; }
     .card {
       background: white;
       border-radius: 16px;
       padding: 20px;
       margin-bottom: 16px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
-
     .card h2 {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      color: #8b7355;
+      color: #718BA2;
       margin-bottom: 12px;
       font-weight: 600;
     }
-
     .task {
       display: flex;
       align-items: flex-start;
       padding: 10px 0;
-      border-bottom: 1px solid #f0f0f0;
+      border-bottom: 1px solid #BDD0E1;
+      cursor: pointer;
     }
-
-    .task:last-child {
-      border-bottom: none;
-    }
-
+    .task:last-child { border-bottom: none; }
     .task input[type="checkbox"] {
       width: 22px;
       height: 22px;
       margin-right: 12px;
       flex-shrink: 0;
-      accent-color: #8b7355;
+      accent-color: #718BA2;
     }
-
-    .task label {
-      font-size: 1rem;
-      line-height: 1.4;
-      cursor: pointer;
-    }
-
-    .task.checked label {
-      text-decoration: line-through;
-      opacity: 0.5;
-    }
-
-    .task .time {
-      font-size: 0.8rem;
-      color: #888;
-      display: block;
-      margin-top: 2px;
-    }
-
-    .priority {
-      background: #e8e4df;
-      border: 2px solid #c9bfb0;
-    }
-
-    .priority h2 {
-      color: #6b5a45;
-    }
-
-    .priority .task {
-      border-bottom-color: #d4cdc3;
-    }
-
-    .priority label {
-      color: #3d3d3d;
-      font-weight: 500;
-    }
-
-    .priority .time {
-      color: #7a7a7a;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .stat {
-      background: #f8f9fa;
-      border-radius: 12px;
-      padding: 16px;
-      text-align: center;
-    }
-
-    .stat .number {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #6b5a45;
-    }
-
-    .stat .label {
-      font-size: 0.75rem;
-      color: #666;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .meal {
+    .task label { font-size: 1rem; line-height: 1.4; cursor: pointer; flex: 1; }
+    .task.checked label { text-decoration: line-through; opacity: 0.5; }
+    .task .time { font-size: 0.8rem; color: #718BA2; display: block; margin-top: 2px; }
+    .priority { background: #BDD0E1; border: 2px solid #718BA2; }
+    .priority h2 { color: #718BA2; }
+    .appointments { background: #C1272D; border: none; }
+    .appointments h2 { color: #fff; }
+    .appointments .task { border-bottom-color: rgba(255,255,255,0.3); }
+    .appointments .task label { color: #fff; }
+    .appointments .task .time { color: rgba(255,255,255,0.8); }
+    .appointments .task input { accent-color: #fff; }
+    .nav-bottom {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
       display: flex;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid #f0f0f0;
+      justify-content: space-around;
+      padding: 12px 0 28px 0;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
     }
-
-    .meal:last-child {
-      border-bottom: none;
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.7rem;
+      color: #718BA2;
+      cursor: pointer;
+      padding: 4px 12px;
     }
-
-    .meal .name {
-      font-weight: 500;
-    }
-
-    .meal .protein {
-      color: #8b7355;
-      font-weight: 600;
-    }
-
-    .footer {
-      text-align: center;
-      color: #8b8b8b;
-      font-size: 0.8rem;
-      margin-top: 20px;
-      padding-bottom: 20px;
-    }
+    .nav-item.active { color: #C1272D; }
+    .nav-item svg { width: 24px; height: 24px; margin-bottom: 4px; }
+    .page { display: none; max-width: 500px; margin: 0 auto; }
+    .page.active { display: block; }
+    .progress-bar { height: 8px; background: #BDD0E1; border-radius: 4px; overflow: hidden; margin-top: 8px; }
+    .progress-fill { height: 100%; background: #DB9E32; border-radius: 4px; }
+    .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+    .day-box { background: white; border-radius: 8px; padding: 8px; text-align: center; font-size: 0.75rem; cursor: pointer; }
+    .day-box.selected { background: #BDD0E1; border: 2px solid #718BA2; }
+    .day-box.today { border: 2px solid #C1272D; }
+    .day-box .day-name { font-weight: 600; color: #718BA2; }
+    .day-box .day-num { color: #718BA2; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .stat { background: #BDD0E1; border-radius: 12px; padding: 16px 8px; text-align: center; }
+    .stat .number { font-size: 1.5rem; font-weight: 700; color: #718BA2; }
+    .stat .label { font-size: 0.7rem; color: #718BA2; text-transform: uppercase; }
+    .backlog-item { padding: 12px 0; border-bottom: 1px solid #BDD0E1; display: flex; justify-content: space-between; align-items: center; }
+    .backlog-item:last-child { border-bottom: none; }
+    .backlog-item .title { font-weight: 500; }
+    .backlog-item .meta { font-size: 0.8rem; color: #718BA2; }
+    .tag { font-size: 0.65rem; padding: 2px 8px; border-radius: 12px; background: #BDD0E1; color: #718BA2; }
+    .tag.home { background: #BDD0E1; color: #718BA2; }
+    .tag.family { background: #C1272D; color: #fff; }
+    .tag.health { background: #DB9E32; color: #fff; }
+    .tag.work { background: #718BA2; color: #fff; }
+    .skincare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .skincare-grid .card { margin-bottom: 0; }
+    .loading { text-align: center; padding: 40px; color: #888; }
+    .empty { color: #999; font-style: italic; padding: 10px 0; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>Monday, August 17</h1>
-      <div class="date">Lucianna turns 8 months 🎉</div>
-      <div class="note">Mike away until Thursday — go easy on yourself</div>
-    </div>
+  <div class="loading" id="loading">Loading...</div>
 
+  <div id="page-today" class="page active">
+    <div class="header">
+      <h1 id="todayTitle"></h1>
+      <div class="subtitle" id="todaySubtitle"></div>
+    </div>
+    <div class="card appointments" id="appointmentsCard" style="display:none;">
+      <h2>Appointments</h2>
+      <div id="appointments"></div>
+    </div>
     <div class="card priority">
       <h2>Non-Negotiables</h2>
-      <div class="task" onclick="toggleTask(this)">
-        <input type="checkbox" id="nn1">
-        <label for="nn1">20 min Peloton Strength<span class="time">During first nap, before Slack</span></label>
-      </div>
-      <div class="task" onclick="toggleTask(this)">
-        <input type="checkbox" id="nn2">
-        <label for="nn2">Hit 100g+ protein</label>
-      </div>
-      <div class="task" onclick="toggleTask(this)">
-        <input type="checkbox" id="nn3">
-        <label for="nn3">Evening walk with Lucianna<span class="time">15-30 min, stroller</span></label>
-      </div>
-      <div class="task" onclick="toggleTask(this)">
-        <input type="checkbox" id="nn4">
-        <label for="nn4">Offline by 5pm</label>
-      </div>
+      <div id="priorities"></div>
     </div>
-
     <div class="card">
       <h2>Morning</h2>
-      <div class="task" onclick="toggleTask(this)">
-        <input type="checkbox" id="m1">
-        <label for="m1">Wake, feed Lucianna<span class="time">6:30-7:30am</span></label>
+      <div id="morning"></div>
+    </div>
+    <div class="skincare-grid">
+      <div class="card">
+        <h2>AM Skincare</h2>
+        <div id="amSkincare"></div>
       </div>
-      <div class="task" onclick="toggleTask(this)">
-        <input type="checkbox" id="m2">
-        <label for="m2">Bring her downstairs, play</label>
-      </div>
-      <div class="task" onclick="toggleTask(this)">
-        <input type="checkbox" id="m3">
-        <label for="m3">Breakfast for you + Lucianna</label>
-      </div>
-      <div class="task" onclick="toggleTask(this)">
-        <input type="checkbox" id="m4">
-        <label for="m4">Lucianna down for first nap<span class="time">~9-10am</span></label>
+      <div class="card">
+        <h2>PM Skincare</h2>
+        <div id="pmSkincare"></div>
       </div>
     </div>
-
     <div class="card">
-      <h2>Midday</h2>
-      <div class="task" onclick="toggleTask(this)">
-        <input type="checkbox" id="d1">
-        <label for="d1">Work block</label>
-      </div>
-      <div class="task" onclick="toggleTask(this)">
-        <input type="checkbox" id="d2">
-        <label for="d2">Lucianna second nap<span class="time">~1-2pm</span></label>
-      </div>
-      <div class="task" onclick="toggleTask(this)">
-        <input type="checkbox" id="d3">
-        <label for="d3">Protein lunch</label>
-      </div>
+      <h2>My Meals</h2>
+      <div id="myMeals"></div>
     </div>
-
     <div class="card">
-      <h2>Evening</h2>
-      <div class="task" onclick="toggleTask(this)">
-        <input type="checkbox" id="e1">
-        <label for="e1">Finish work<span class="time">by 5pm</span></label>
-      </div>
-      <div class="task" onclick="toggleTask(this)">
-        <input type="checkbox" id="e2">
-        <label for="e2">Walk with Lucianna</label>
-      </div>
-      <div class="task" onclick="toggleTask(this)">
-        <input type="checkbox" id="e3">
-        <label for="e3">Dinner</label>
-      </div>
-      <div class="task" onclick="toggleTask(this)">
-        <input type="checkbox" id="e4">
-        <label for="e4">Bookmark tomorrow's Peloton class</label>
-      </div>
+      <h2>Lucianna's Meals</h2>
+      <div id="babyMeals"></div>
     </div>
-
     <div class="card">
-      <h2>Today's Meals</h2>
-      <div class="meal">
-        <span class="name">Breakfast: Eggs + turkey sausage</span>
-        <span class="protein">30g</span>
-      </div>
-      <div class="meal">
-        <span class="name">Lunch: Chicken salad</span>
-        <span class="protein">35g</span>
-      </div>
-      <div class="meal">
-        <span class="name">Dinner: Sheet pan chicken</span>
-        <span class="protein">35g</span>
-      </div>
-      <div class="meal">
-        <span class="name">Snacks: Yogurt + cheese</span>
-        <span class="protein">20g</span>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Targets</h2>
-      <div class="stats">
-        <div class="stat">
-          <div class="number">120g</div>
-          <div class="label">Protein</div>
+      <h2>Water Tracker</h2>
+      <div style="text-align:center;">
+        <div style="font-size:2.5rem;font-weight:700;color:#718BA2;" id="water-oz">0</div>
+        <div style="font-size:0.8rem;color:#718BA2;margin-bottom:12px;">of 100 oz</div>
+        <div class="progress-bar" style="margin-bottom:12px;">
+          <div class="progress-fill" id="water-bar" style="width:0%"></div>
         </div>
-        <div class="stat">
-          <div class="number">7k</div>
-          <div class="label">Steps</div>
+        <div style="display:flex;gap:8px;justify-content:center;">
+          <button onclick="addWater(8)" style="padding:10px 16px;border-radius:20px;border:none;background:#BDD0E1;color:#718BA2;font-weight:600;cursor:pointer;">+8 oz</button>
+          <button onclick="addWater(16)" style="padding:10px 16px;border-radius:20px;border:none;background:#BDD0E1;color:#718BA2;font-weight:600;cursor:pointer;">+16 oz</button>
+          <button onclick="addWater(32)" style="padding:10px 16px;border-radius:20px;border:none;background:#BDD0E1;color:#718BA2;font-weight:600;cursor:pointer;">+32 oz</button>
+          <button onclick="resetWater()" style="padding:10px 12px;border-radius:20px;border:none;background:#C1272D;color:#fff;font-weight:600;cursor:pointer;">Reset</button>
         </div>
       </div>
     </div>
-
-    <div class="footer">
-      You've got this. One task at a time.
+    <div class="card">
+      <h2>Quick Wins</h2>
+      <div id="quickWins"></div>
     </div>
   </div>
 
-  <script>
-    function toggleTask(taskEl) {
-      const checkbox = taskEl.querySelector('input[type="checkbox"]');
-      checkbox.checked = !checkbox.checked;
-      taskEl.classList.toggle('checked', checkbox.checked);
-      saveState();
-    }
+  <div id="page-week" class="page">
+    <div class="header">
+      <h1>This Week</h1>
+      <div class="subtitle" id="weekRange"></div>
+    </div>
+    <div class="card">
+      <h2>Week at a Glance</h2>
+      <div class="week-grid" id="weekGrid"></div>
+    </div>
+    <div class="card" id="dayDetailCard">
+      <h2 id="dayDetailTitle"></h2>
+      <div id="dayDetailContent"></div>
+    </div>
+    <div class="card">
+      <h2>Notes</h2>
+      <p style="color:#718BA2;font-style:italic;margin-bottom:8px;">Mike away Mon–Wed</p>
+      <p style="color:#C1272D;font-weight:500;">Thu: PTO — Sesame Place!</p>
+    </div>
+    <div class="card">
+      <h2>Workouts This Week</h2>
+      <div id="weekWorkouts"></div>
+    </div>
+    <div class="card">
+      <h2>Recurring</h2>
+      <div id="weekRecurring"></div>
+    </div>
+  </div>
 
-    function saveState() {
-      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-      const state = {};
-      checkboxes.forEach(cb => {
-        state[cb.id] = cb.checked;
+  <div id="page-progress" class="page">
+    <div class="header">
+      <h1>Progress</h1>
+      <div class="subtitle">Track your wins</div>
+    </div>
+    <div class="card">
+      <h2 id="habitWeekTitle">Habit Tracker</h2>
+      <div id="habitGrid"></div>
+    </div>
+    <div class="card">
+      <h2>Workout Streak</h2>
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+        <span style="font-size:0.85rem;">Week 1 of 4</span>
+        <span style="font-size:0.85rem;color:#718BA2;" id="workout-streak">0/5 days</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="workout-bar" style="width:0%"></div></div>
+    </div>
+    <div class="card">
+      <h2>Weight Tracker</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div>
+          <label style="font-size:0.75rem;color:#888;">Starting</label>
+          <input type="number" id="weight-start" placeholder="lbs" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;font-size:1rem;margin-top:4px;" onchange="updateWeight()">
+        </div>
+        <div>
+          <label style="font-size:0.75rem;color:#888;">Current</label>
+          <input type="number" id="weight-current" placeholder="lbs" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;font-size:1rem;margin-top:4px;" onchange="updateWeight()">
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+        <span style="font-size:0.85rem;">Progress</span>
+        <span style="font-size:0.85rem;color:#718BA2;" id="weight-progress">0 / 50 lbs lost</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="weight-bar" style="width:0%"></div></div>
+      <p style="font-size:0.75rem;color:#888;margin-top:8px;">Update weekly — same day, same time</p>
+    </div>
+    <div class="card">
+      <h2>Daily Targets</h2>
+      <div class="backlog-item"><div><div class="title">Protein</div><div class="meta">100-120g per day</div></div><span class="tag">Daily</span></div>
+      <div class="backlog-item"><div><div class="title">Steps</div><div class="meta">7,000 per day</div></div><span class="tag">Daily</span></div>
+      <div class="backlog-item"><div><div class="title">Water</div><div class="meta">100oz per day</div></div><span class="tag">Daily</span></div>
+    </div>
+  </div>
+
+  <div id="page-backlog" class="page">
+    <div class="header">
+      <h1>Backlog</h1>
+      <div class="subtitle">Everything in one place</div>
+    </div>
+    <div id="backlogContent"></div>
+  </div>
+
+  <nav class="nav-bottom">
+    <div class="nav-item active" onclick="showPage('today')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+      Today
+    </div>
+    <div class="nav-item" onclick="showPage('week')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      Week
+    </div>
+    <div class="nav-item" onclick="showPage('progress')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+      Progress
+    </div>
+    <div class="nav-item" onclick="showPage('backlog')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+      Backlog
+    </div>
+  </nav>
+
+<script>
+let db;
+let currentDate = new Date();
+currentDate.setHours(0,0,0,0);
+let selectedWeekDay = null;
+
+const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+async function init() {
+  try {
+    const SQL = await initSqlJs({ locateFile: f => `https://sql.js.org/dist/${f}` });
+    const saved = localStorage.getItem('cos-db');
+    if (saved) {
+      db = new SQL.Database(new Uint8Array(JSON.parse(saved)));
+    } else {
+      db = new SQL.Database();
+      createSchema();
+      seedData();
+    }
+    document.getElementById('loading').style.display = 'none';
+    renderToday();
+    loadWeight();
+    updateWaterDisplay();
+    checkMidnight();
+    fetchWeather();
+  } catch(e) {
+    console.error('Init error:', e);
+    document.getElementById('loading').textContent = 'Error: ' + e.message;
+  }
+}
+
+function createSchema() {
+  db.run(`
+    CREATE TABLE tasks (
+      id INTEGER PRIMARY KEY,
+      title TEXT NOT NULL,
+      time_note TEXT,
+      category TEXT DEFAULT 'schedule',
+      day_of_week INTEGER,
+      specific_date TEXT,
+      sort_order INTEGER DEFAULT 0
+    );
+    CREATE TABLE completions (
+      task_id INTEGER,
+      completed_date TEXT,
+      completed_at TEXT,
+      PRIMARY KEY (task_id, completed_date)
+    );
+    CREATE TABLE notes (
+      date TEXT PRIMARY KEY,
+      subtitle TEXT,
+      note TEXT
+    );
+    CREATE TABLE backlog (
+      id INTEGER PRIMARY KEY,
+      title TEXT,
+      meta TEXT,
+      tag TEXT,
+      section TEXT
+    );
+    CREATE TABLE habits (
+      name TEXT,
+      date TEXT,
+      done INTEGER DEFAULT 0,
+      PRIMARY KEY (name, date)
+    );
+    CREATE TABLE water (
+      date TEXT PRIMARY KEY,
+      oz INTEGER DEFAULT 0
+    );
+  `);
+}
+
+function seedData() {
+  const cats = ['priority','morning','amSkin','pmSkin','myMeals','babyMeals','quickWins'];
+  // Priorities - all days
+  [['20 min Peloton Strength','During first nap'],['Hit 100g+ protein',null],['Evening walk with Lucianna','15-30 min'],['Offline by 5pm',null],['Update Skylight calendar',null]].forEach(([t,n],i)=>{
+    for(let d=0;d<7;d++) db.run('INSERT INTO tasks(title,time_note,category,day_of_week,sort_order)VALUES(?,?,?,?,?)',[t,n,'priority',d,i]);
+  });
+  // Morning - all days
+  [['Feed Lucianna','6:30-7:30am'],['Breakfast for you + Lucianna',null],['Lucianna down for first nap','~9-10am']].forEach(([t,n],i)=>{
+    for(let d=0;d<7;d++) db.run('INSERT INTO tasks(title,time_note,category,day_of_week,sort_order)VALUES(?,?,?,?,?)',[t,n,'morning',d,i]);
+  });
+  // AM Skincare
+  [['Wash face',null],['Moisturizer',null],['Sunblock',null],['Brush teeth',null]].forEach(([t,n],i)=>{
+    for(let d=0;d<7;d++) db.run('INSERT INTO tasks(title,time_note,category,day_of_week,sort_order)VALUES(?,?,?,?,?)',[t,n,'amSkin',d,i]);
+  });
+  // PM Skincare
+  [['Wash face',null],['Caudalie serum',null],['Moisturizer',null],['Gua sha',null],['Brush teeth',null]].forEach(([t,n],i)=>{
+    for(let d=0;d<7;d++) db.run('INSERT INTO tasks(title,time_note,category,day_of_week,sort_order)VALUES(?,?,?,?,?)',[t,n,'pmSkin',d,i]);
+  });
+  // My Meals
+  [['Breakfast: Eggs + turkey sausage','30g protein'],['Lunch: Chicken salad','35g protein'],['Dinner: Sheet pan chicken','35g protein'],['Snacks: Yogurt + cheese','20g protein']].forEach(([t,n],i)=>{
+    for(let d=0;d<7;d++) db.run('INSERT INTO tasks(title,time_note,category,day_of_week,sort_order)VALUES(?,?,?,?,?)',[t,n,'myMeals',d,i]);
+  });
+  // Baby Meals
+  [['Breakfast: Omelette w/ ricotta','or Hulk pancakes'],['Lunch: Fruit + cheese','soft, cut small'],['Dinner: Turkey patties','from freezer']].forEach(([t,n],i)=>{
+    for(let d=0;d<7;d++) db.run('INSERT INTO tasks(title,time_note,category,day_of_week,sort_order)VALUES(?,?,?,?,?)',[t,n,'babyMeals',d,i]);
+  });
+  // Backlog - Quick Wins
+  [['Put Lucianna Easter basket away','5 min','home','quick'],["Buy Dad birthday gift","Birthday Sat Aug 22",'family','quick'],['Schedule lunch with Dad + Lucianna','Quality time','family','quick']].forEach(([t,m,tag,sec])=>{
+    db.run('INSERT INTO backlog(title,meta,tag,section)VALUES(?,?,?,?)',[t,m,tag,sec]);
+  });
+  // Backlog - Up Next
+  [['Lucianna weekly meal plan','1-2 hrs','family','upnext'],['Cleaning schedule','30 min','home','upnext'],['Daily checklist system','30 min to set up','home','upnext']].forEach(([t,m,tag,sec])=>{
+    db.run('INSERT INTO backlog(title,meta,tag,section)VALUES(?,?,?,?)',[t,m,tag,sec]);
+  });
+  // Backlog - This Month
+  [['Sunday batch prep (first one)','Aug 23','health','month'],['Plan Lucianna 1st birthday','Start venue/theme','family','month'],['Declutter and organize room','2 hrs','home','month'],['Declutter and organize office','2 hrs','home','month'],['Declutter bedroom closet','2 hrs','home','month'],['Declutter basement','3-4 hrs','home','month']].forEach(([t,m,tag,sec])=>{
+    db.run('INSERT INTO backlog(title,meta,tag,section)VALUES(?,?,?,?)',[t,m,tag,sec]);
+  });
+  // Backlog - This Quarter
+  [['Plan a family trip','Even a weekend getaway','family','quarter'],['Trip with Nonna','Quality time','family','quarter'],['Photography project','Pick one, don\'t overthink','home','quarter'],['Management prep','Discuss timeline with boss','work','quarter']].forEach(([t,m,tag,sec])=>{
+    db.run('INSERT INTO backlog(title,meta,tag,section)VALUES(?,?,?,?)',[t,m,tag,sec]);
+  });
+  // Appointments (specific dates) - using 2026 dates
+  db.run('INSERT INTO tasks(title,time_note,category,specific_date,sort_order)VALUES(?,?,?,?,?)',["Lucianna's 8 month pediatrician visit",'9:00 AM','appointment','2026-08-17',0]);
+  db.run('INSERT INTO tasks(title,time_note,category,specific_date,sort_order)VALUES(?,?,?,?,?)',["Take Lucianna's 8 month pictures",null,'appointment','2026-08-17',1]);
+  db.run('INSERT INTO tasks(title,time_note,category,specific_date,sort_order)VALUES(?,?,?,?,?)',['Eyebrow appt @ Mood','2:45pm','appointment','2026-08-18',0]);
+  db.run('INSERT INTO tasks(title,time_note,category,specific_date,sort_order)VALUES(?,?,?,?,?)',['Therapy','7:30pm','appointment','2026-08-18',1]);
+  // Week notes
+  db.run('INSERT INTO notes(date,subtitle,note)VALUES(?,?,?)',['2026-08-17','Lucianna turns 8 months','<p style="color:#C1272D;font-weight:500;margin-bottom:8px;">9am: Pediatrician visit</p><p style="margin-bottom:8px;"><strong>Workout:</strong> Beginner Full Body Strength · Adrian Williams</p><p style="color:#A89F93;font-style:italic;">Mike away</p>']);
+  db.run('INSERT INTO notes(date,subtitle,note)VALUES(?,?,?)',['2026-08-18',null,'<p style="color:#C1272D;font-weight:500;margin-bottom:8px;">2:45pm: Eyebrow appt</p><p style="color:#C1272D;font-weight:500;margin-bottom:8px;">7:30pm: Therapy</p><p style="margin-bottom:8px;"><strong>Workout:</strong> Upper Body Strength · Robin Arzón</p><p style="color:#A89F93;font-style:italic;">Mike away</p>']);
+  db.run('INSERT INTO notes(date,subtitle,note)VALUES(?,?,?)',['2026-08-19',null,'<p style="margin-bottom:8px;"><strong>Workout:</strong> Low Impact Ride · Christine D\'Ercole</p><p style="color:#A89F93;font-style:italic;">Mike away</p>']);
+  db.run('INSERT INTO notes(date,subtitle,note)VALUES(?,?,?)',['2026-08-20','PTO — Sesame Place!','<p style="color:#C1272D;font-weight:500;margin-bottom:8px;">Sesame Place day trip!</p><p style="margin-bottom:8px;"><strong>Workout:</strong> Rest day (walking counts!)</p><p style="color:#718BA2;">Mike is back!</p>']);
+  db.run('INSERT INTO notes(date,subtitle,note)VALUES(?,?,?)',['2026-08-21',null,'<p style="margin-bottom:8px;"><strong>Workout:</strong> Beginner Yoga · Aditi Shah</p><p style="color:#A89F93;font-style:italic;">End early (3-4pm)</p>']);
+  db.run('INSERT INTO notes(date,subtitle,note)VALUES(?,?,?)',['2026-08-22',"Dad's Birthday!",`<p style="color:#C1272D;font-weight:500;margin-bottom:8px;">Dad's Birthday!</p><p style="color:#C1272D;font-weight:500;margin-bottom:8px;">Date Anniversary!</p><p style="color:#718BA2;">Optional: Declutter session?</p>`]);
+  db.run('INSERT INTO notes(date,subtitle,note)VALUES(?,?,?)',['2026-08-23','Batch prep day','<p style="color:#C1272D;font-weight:500;margin-bottom:8px;">Batch prep day</p><p style="margin-bottom:8px;">Egg muffins, shredded chicken, hard boiled eggs</p><p style="color:#A89F93;">Wash sheets</p>']);
+  // Workouts - specific dates
+  db.run('INSERT INTO tasks(title,time_note,category,specific_date,sort_order)VALUES(?,?,?,?,?)',['Beginner Full Body Strength','20 min · Adrian Williams','workout','2026-08-17',0]);
+  db.run('INSERT INTO tasks(title,time_note,category,specific_date,sort_order)VALUES(?,?,?,?,?)',['Upper Body Strength','20 min · Robin Arzón','workout','2026-08-18',0]);
+  db.run('INSERT INTO tasks(title,time_note,category,specific_date,sort_order)VALUES(?,?,?,?,?)',['Low Impact Ride','20 min · Christine D\'Ercole','workout','2026-08-19',0]);
+  db.run('INSERT INTO tasks(title,time_note,category,specific_date,sort_order)VALUES(?,?,?,?,?)',['Sesame Place (rest day)','Walking counts!','workout','2026-08-20',0]);
+  db.run('INSERT INTO tasks(title,time_note,category,specific_date,sort_order)VALUES(?,?,?,?,?)',['Beginner Yoga','20 min · Aditi Shah','workout','2026-08-21',0]);
+  // Recurring tasks
+  db.run('INSERT INTO tasks(title,time_note,category,day_of_week,sort_order)VALUES(?,?,?,?,?)',['Wash and change sheets',null,'recurring',0,0]);
+  db.run('INSERT INTO tasks(title,time_note,category,specific_date,sort_order)VALUES(?,?,?,?,?)',['Sunday batch prep','Aug 23','recurring','2026-08-23',1]);
+  saveDb();
+}
+
+function saveDb() {
+  localStorage.setItem('cos-db', JSON.stringify(Array.from(db.export())));
+}
+function formatDate(d) { return d.toISOString().split('T')[0]; }
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelector(`.nav-item[onclick*="${page}"]`).classList.add('active');
+  if (page === 'today') renderToday();
+  if (page === 'week') renderWeek();
+  if (page === 'progress') renderProgress();
+  if (page === 'backlog') renderBacklog();
+}
+function renderToday() {
+  const dow = currentDate.getDay();
+  const dateStr = formatDate(currentDate);
+  document.getElementById('todayTitle').textContent = `${DAYS[dow]}, ${MONTHS[currentDate.getMonth()]} ${currentDate.getDate()}`;
+  const note = db.exec('SELECT subtitle FROM notes WHERE date=?',[dateStr]);
+  document.getElementById('todaySubtitle').textContent = note.length && note[0].values.length ? note[0].values[0][0] : '';
+  const appts = db.exec('SELECT id,title,time_note FROM tasks WHERE category="appointment" AND specific_date=? ORDER BY sort_order',[dateStr]);
+  if (appts.length && appts[0].values.length) {
+    document.getElementById('appointmentsCard').style.display = 'block';
+    document.getElementById('appointments').innerHTML = renderTaskList(appts[0].values, dateStr);
+  } else {
+    document.getElementById('appointmentsCard').style.display = 'none';
+  }
+  ['priorities:priority','morning:morning','amSkincare:amSkin','pmSkincare:pmSkin','myMeals:myMeals','babyMeals:babyMeals','quickWins:quickWins'].forEach(pair => {
+    const [elId, cat] = pair.split(':');
+    const el = document.getElementById(elId);
+    if (!el) return;
+    const tasks = db.exec('SELECT id,title,time_note FROM tasks WHERE category=? AND (day_of_week=? OR specific_date=?) ORDER BY sort_order',[cat,dow,dateStr]);
+    el.innerHTML = tasks.length && tasks[0].values.length ? renderTaskList(tasks[0].values, dateStr) : '<div class="empty">None</div>';
+  });
+}
+function renderTaskList(rows, dateStr) {
+  return rows.map(([id,title,timeNote]) => {
+    const done = db.exec('SELECT 1 FROM completions WHERE task_id=? AND completed_date=?',[id,dateStr]);
+    const checked = done.length && done[0].values.length;
+    return `<div class="task ${checked?'checked':''}" onclick="toggleTask(${id},'${dateStr}')"><input type="checkbox" ${checked?'checked':''}><label>${title}${timeNote?`<span class="time">${timeNote}</span>`:''}</label></div>`;
+  }).join('');
+}
+
+function toggleTask(taskId, dateStr) {
+  const exists = db.exec('SELECT 1 FROM completions WHERE task_id=? AND completed_date=?',[taskId,dateStr]);
+  if (exists.length && exists[0].values.length) {
+    db.run('DELETE FROM completions WHERE task_id=? AND completed_date=?',[taskId,dateStr]);
+  } else {
+    db.run('INSERT INTO completions(task_id,completed_date,completed_at)VALUES(?,?,?)',[taskId,dateStr,new Date().toISOString()]);
+  }
+  saveDb(); renderToday();
+}
+function addWater(oz) {
+  const dateStr = formatDate(currentDate);
+  db.run('INSERT INTO water(date,oz)VALUES(?,?) ON CONFLICT(date) DO UPDATE SET oz=oz+?',[dateStr,oz,oz]);
+  saveDb(); updateWaterDisplay();
+}
+function resetWater() {
+  db.run('DELETE FROM water WHERE date=?',[formatDate(currentDate)]);
+  saveDb(); updateWaterDisplay();
+}
+function updateWaterDisplay() {
+  const dateStr = formatDate(currentDate);
+  const res = db.exec('SELECT oz FROM water WHERE date=?',[dateStr]);
+  const oz = res.length && res[0].values.length ? res[0].values[0][0] : 0;
+  document.getElementById('water-oz').textContent = oz;
+  document.getElementById('water-bar').style.width = Math.min(100,(oz/100)*100)+'%';
+}
+function updateWeight() {
+  const start = parseFloat(document.getElementById('weight-start').value)||0;
+  const current = parseFloat(document.getElementById('weight-current').value)||0;
+  const lost = start - current;
+  document.getElementById('weight-progress').textContent = lost.toFixed(1)+' / 50 lbs lost';
+  document.getElementById('weight-bar').style.width = Math.min(100,Math.max(0,(lost/50)*100))+'%';
+  localStorage.setItem('weight-start',start);
+  localStorage.setItem('weight-current',current);
+}
+function loadWeight() {
+  const s = localStorage.getItem('weight-start'), c = localStorage.getItem('weight-current');
+  if(s) document.getElementById('weight-start').value = s;
+  if(c) document.getElementById('weight-current').value = c;
+  updateWeight();
+}
+function renderWeek() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const startOfWeek = new Date(today); startOfWeek.setDate(today.getDate() - today.getDay());
+  const endOfWeek = new Date(startOfWeek); endOfWeek.setDate(startOfWeek.getDate() + 6);
+  document.getElementById('weekRange').textContent = `${MONTHS[startOfWeek.getMonth()]} ${startOfWeek.getDate()} - ${endOfWeek.getDate()}`;
+  let html = '';
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(startOfWeek); d.setDate(startOfWeek.getDate() + i);
+    const isToday = d.getTime() === today.getTime();
+    const isSelected = selectedWeekDay === i;
+    html += `<div class="day-box ${isToday?'today':''} ${isSelected?'selected':''}" onclick="selectWeekDay(${i})"><div class="day-name">${DAYS[d.getDay()].slice(0,3)}</div><div class="day-num">${d.getDate()}</div></div>`;
+  }
+  document.getElementById('weekGrid').innerHTML = html;
+  if (selectedWeekDay === null) selectWeekDay(today.getDay());
+  // Render workouts
+  let workoutHtml = '';
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(startOfWeek); d.setDate(startOfWeek.getDate() + i);
+    const ds = formatDate(d);
+    const wo = db.exec('SELECT id,title,time_note FROM tasks WHERE category="workout" AND specific_date=?',[ds]);
+    if (wo.length && wo[0].values.length) {
+      wo[0].values.forEach(([id,title,note]) => {
+        const done = db.exec('SELECT 1 FROM completions WHERE task_id=? AND completed_date=?',[id,ds]);
+        const checked = done.length && done[0].values.length;
+        workoutHtml += `<div class="task ${checked?'checked':''}" onclick="toggleWeekTask(${id},'${ds}')"><input type="checkbox" ${checked?'checked':''}><label>${DAYS[d.getDay()].slice(0,3)}: ${title}${note?`<span class="time">${note}</span>`:''}</label></div>`;
       });
-      localStorage.setItem('dashboard-2024-08-17', JSON.stringify(state));
     }
-
-    function loadState() {
-      const saved = localStorage.getItem('dashboard-2024-08-17');
-      if (saved) {
-        const state = JSON.parse(saved);
-        Object.keys(state).forEach(id => {
-          const cb = document.getElementById(id);
-          if (cb) {
-            cb.checked = state[id];
-            cb.closest('.task').classList.toggle('checked', state[id]);
-          }
-        });
-      }
+  }
+  document.getElementById('weekWorkouts').innerHTML = workoutHtml || '<div class="empty">No workouts scheduled</div>';
+  // Render recurring
+  const endDs = formatDate(endOfWeek);
+  const rec = db.exec('SELECT id,title,time_note,specific_date,day_of_week FROM tasks WHERE category="recurring" AND (specific_date BETWEEN ? AND ? OR day_of_week IS NOT NULL)',[formatDate(startOfWeek),endDs]);
+  let recHtml = '';
+  if (rec.length && rec[0].values.length) {
+    rec[0].values.forEach(([id,title,note,specDate,dow]) => {
+      const ds = specDate || formatDate(startOfWeek);
+      const done = db.exec('SELECT 1 FROM completions WHERE task_id=? AND completed_date=?',[id,ds]);
+      const checked = done.length && done[0].values.length;
+      recHtml += `<div class="task ${checked?'checked':''}" onclick="toggleWeekTask(${id},'${ds}')"><input type="checkbox" ${checked?'checked':''}><label>${title}${note?`<span class="time">${note}</span>`:''}</label></div>`;
+    });
+  }
+  document.getElementById('weekRecurring').innerHTML = recHtml || '<div class="empty">No recurring tasks</div>';
+}
+function selectWeekDay(dayIdx) {
+  selectedWeekDay = dayIdx;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const startOfWeek = new Date(today); startOfWeek.setDate(today.getDate() - today.getDay());
+  const d = new Date(startOfWeek); d.setDate(startOfWeek.getDate() + dayIdx);
+  document.querySelectorAll('.day-box').forEach((el,i) => el.classList.toggle('selected', i === dayIdx));
+  document.getElementById('dayDetailTitle').textContent = `${DAYS[d.getDay()]}, ${MONTHS[d.getMonth()]} ${d.getDate()}`;
+  const dateStr = formatDate(d);
+  const note = db.exec('SELECT note FROM notes WHERE date=?',[dateStr]);
+  const noteHtml = note.length && note[0].values.length ? note[0].values[0][0] : '<p style="color:#718BA2;font-style:italic;">No notes for this day</p>';
+  const usePa = dateStr === '2026-08-20'; // Sesame Place day
+  document.getElementById('dayDetailContent').innerHTML = noteHtml + getWeatherHtml(dateStr, usePa);
+}
+function renderProgress() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const startOfWeek = new Date(today); startOfWeek.setDate(today.getDate() - today.getDay());
+  document.getElementById('habitWeekTitle').textContent = `Habit Tracker — Week of ${MONTHS[startOfWeek.getMonth()]} ${startOfWeek.getDate()}`;
+  const habits = ['Workout','Walk','Water 100oz','AM Skincare','PM Skincare'];
+  let html = '<table style="width:100%;font-size:0.8rem;border-collapse:collapse;"><thead><tr style="color:#718BA2;"><th style="text-align:left;padding:8px 4px;"></th>';
+  for(let i=0;i<7;i++) html += `<th style="padding:8px 2px;">${DAYS[i][0]}</th>`;
+  html += '</tr></thead><tbody>';
+  let workoutCount = 0;
+  habits.forEach(h => {
+    html += `<tr><td style="padding:8px 4px;">${h}</td>`;
+    for(let i=0;i<7;i++) {
+      const d = new Date(startOfWeek); d.setDate(startOfWeek.getDate() + i);
+      const ds = formatDate(d);
+      const done = db.exec('SELECT done FROM habits WHERE name=? AND date=?',[h,ds]);
+      const checked = done.length && done[0].values.length && done[0].values[0][0];
+      if (h === 'Workout' && checked) workoutCount++;
+      html += `<td style="text-align:center;"><input type="checkbox" ${checked?'checked':''} onchange="toggleHabit('${h}','${ds}',this.checked)" style="accent-color:#718BA2;"></td>`;
     }
-
-    loadState();
-  </script>
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+  document.getElementById('habitGrid').innerHTML = html;
+  document.getElementById('workout-streak').textContent = `${workoutCount}/5 days`;
+  document.getElementById('workout-bar').style.width = Math.min(100,(workoutCount/5)*100)+'%';
+}
+function toggleHabit(name, date, checked) {
+  db.run('INSERT INTO habits(name,date,done)VALUES(?,?,?) ON CONFLICT(name,date) DO UPDATE SET done=?',[name,date,checked?1:0,checked?1:0]);
+  saveDb();
+}
+function toggleWeekTask(taskId, dateStr) {
+  const exists = db.exec('SELECT 1 FROM completions WHERE task_id=? AND completed_date=?',[taskId,dateStr]);
+  if (exists.length && exists[0].values.length) {
+    db.run('DELETE FROM completions WHERE task_id=? AND completed_date=?',[taskId,dateStr]);
+  } else {
+    db.run('INSERT INTO completions(task_id,completed_date,completed_at)VALUES(?,?,?)',[taskId,dateStr,new Date().toISOString()]);
+  }
+  saveDb(); renderWeek();
+}
+function renderBacklog() {
+  const sections = {quick:'Quick Wins',upnext:'Up Next',month:'This Month',quarter:'This Quarter'};
+  let html = '';
+  Object.entries(sections).forEach(([sec,title]) => {
+    const items = db.exec('SELECT title,meta,tag FROM backlog WHERE section=?',[sec]);
+    if (items.length && items[0].values.length) {
+      html += `<div class="card"><h2>${title}</h2>`;
+      items[0].values.forEach(([t,m,tag]) => {
+        html += `<div class="backlog-item"><div><div class="title">${t}</div><div class="meta">${m||''}</div></div><span class="tag ${tag}">${tag.charAt(0).toUpperCase()+tag.slice(1)}</span></div>`;
+      });
+      html += '</div>';
+    }
+  });
+  document.getElementById('backlogContent').innerHTML = html || '<div class="card"><p class="empty">No backlog items</p></div>';
+}
+function checkMidnight() {
+  const now = new Date(), midnight = new Date(now);
+  midnight.setDate(midnight.getDate() + 1); midnight.setHours(0,0,0,0);
+  setTimeout(() => { currentDate = new Date(); currentDate.setHours(0,0,0,0); renderToday(); checkMidnight(); }, midnight - now);
+}
+let weatherData = { nj: null, pa: null };
+async function fetchWeather() {
+  try {
+    const [njRes, paRes] = await Promise.all([
+      fetch('https://api.open-meteo.com/v1/forecast?latitude=40.27&longitude=-74.03&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode&temperature_unit=fahrenheit&timezone=America/New_York'),
+      fetch('https://api.open-meteo.com/v1/forecast?latitude=40.17&longitude=-74.92&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode&temperature_unit=fahrenheit&timezone=America/New_York')
+    ]);
+    const njData = await njRes.json();
+    const paData = await paRes.json();
+    weatherData.nj = njData.daily;
+    weatherData.pa = paData.daily;
+  } catch(e) { console.log('Weather fetch failed'); }
+}
+function getWeatherIcon(code) {
+  if (code <= 1) return '☀️';
+  if (code <= 3) return '⛅';
+  if (code <= 48) return '☁️';
+  if (code <= 67) return '🌧️';
+  if (code <= 77) return '🌨️';
+  if (code <= 82) return '🌧️';
+  return '⛈️';
+}
+function getWeatherHtml(dateStr, usePa = false) {
+  const data = usePa ? weatherData.pa : weatherData.nj;
+  if (!data) return '';
+  const idx = data.time.indexOf(dateStr);
+  if (idx === -1) return '';
+  const hi = Math.round(data.temperature_2m_max[idx]);
+  const lo = Math.round(data.temperature_2m_min[idx]);
+  const rain = data.precipitation_probability_max[idx];
+  const icon = getWeatherIcon(data.weathercode[idx]);
+  const loc = usePa ? ' (Langhorne)' : '';
+  return `<p style="margin-top:12px;padding-top:12px;border-top:1px solid #BDD0E1;font-size:1.1rem;">${icon} <strong>${hi}°</strong> / ${lo}°${rain > 20 ? ' · ' + rain + '% rain' : ''}${loc}</p>`;
+}
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+init();
+</script>
 </body>
 </html>
