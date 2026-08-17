@@ -258,6 +258,23 @@
     </div>
 
     <div class="card">
+      <h2>Water Tracker</h2>
+      <div style="text-align:center;">
+        <div style="font-size:2.5rem;font-weight:700;color:#718BA2;" id="water-oz">0</div>
+        <div style="font-size:0.8rem;color:#718BA2;margin-bottom:12px;">of 100 oz</div>
+        <div class="progress-bar" style="margin-bottom:12px;">
+          <div class="progress-fill" id="water-bar" style="width:0%"></div>
+        </div>
+        <div style="display:flex;gap:8px;justify-content:center;">
+          <button onclick="addWater(8)" style="padding:10px 16px;border-radius:20px;border:none;background:#BDD0E1;color:#718BA2;font-weight:600;cursor:pointer;">+8 oz</button>
+          <button onclick="addWater(16)" style="padding:10px 16px;border-radius:20px;border:none;background:#BDD0E1;color:#718BA2;font-weight:600;cursor:pointer;">+16 oz</button>
+          <button onclick="addWater(32)" style="padding:10px 16px;border-radius:20px;border:none;background:#BDD0E1;color:#718BA2;font-weight:600;cursor:pointer;">+32 oz</button>
+          <button onclick="resetWater()" style="padding:10px 12px;border-radius:20px;border:none;background:#C1272D;color:#fff;font-weight:600;cursor:pointer;">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
       <h2>Quick Wins</h2>
       <div class="task" onclick="toggleTask(this)">
         <input type="checkbox" id="qw1">
@@ -702,9 +719,26 @@
       document.getElementById('day-detail-title').textContent = dayData[day].title;
       document.getElementById('day-detail-content').innerHTML = dayData[day].content + getWeatherHtml(day);
     }
+    function addWater(oz) {
+      let current = parseInt(localStorage.getItem('water-today') || '0');
+      current += oz;
+      localStorage.setItem('water-today', current);
+      updateWaterDisplay();
+    }
+    function resetWater() {
+      localStorage.setItem('water-today', '0');
+      updateWaterDisplay();
+    }
+    function updateWaterDisplay() {
+      const oz = parseInt(localStorage.getItem('water-today') || '0');
+      document.getElementById('water-oz').textContent = oz;
+      const pct = Math.min(100, (oz / 100) * 100);
+      document.getElementById('water-bar').style.width = pct + '%';
+    }
     document.addEventListener('DOMContentLoaded', () => {
       loadState();
       loadWeight();
+      updateWaterDisplay();
       fetchWeather().then(() => selectDay('mon'));
     });
   </script>
