@@ -11,7 +11,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #f5f3f0;
+      background: #F4F1E8;
       min-height: 100vh;
       padding: 20px 20px 100px 20px;
       color: #3d3d3d;
@@ -30,7 +30,7 @@
       font-size: 0.8rem;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      color: #8b7355;
+      color: #5976AC;
       margin-bottom: 12px;
       font-weight: 600;
     }
@@ -47,7 +47,7 @@
       height: 22px;
       margin-right: 12px;
       flex-shrink: 0;
-      accent-color: #8b7355;
+      accent-color: #5976AC;
     }
     .task label { font-size: 1rem; line-height: 1.4; cursor: pointer; flex: 1; }
     .task.checked label { text-decoration: line-through; opacity: 0.5; }
@@ -72,12 +72,12 @@
       cursor: pointer;
       padding: 4px 12px;
     }
-    .nav-item.active { color: #8b7355; }
+    .nav-item.active { color: #5976AC; }
     .nav-item svg { width: 24px; height: 24px; margin-bottom: 4px; }
     .page { display: none; }
     .page.active { display: block; }
-    .priority { background: #e8e4df; border: 2px solid #c9bfb0; }
-    .priority h2 { color: #6b5a45; }
+    .priority { background: #C1DBE8; border: 2px solid #9BB9E0; }
+    .priority h2 { color: #5976AC; }
     .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
     .stat {
       background: #f8f9fa;
@@ -85,16 +85,16 @@
       padding: 16px 8px;
       text-align: center;
     }
-    .stat .number { font-size: 1.5rem; font-weight: 700; color: #6b5a45; }
+    .stat .number { font-size: 1.5rem; font-weight: 700; color: #5976AC; }
     .stat .label { font-size: 0.7rem; color: #666; text-transform: uppercase; }
     .progress-bar {
       height: 8px;
-      background: #e8e4df;
+      background: #C1DBE8;
       border-radius: 4px;
       overflow: hidden;
       margin-top: 8px;
     }
-    .progress-fill { height: 100%; background: #8b7355; border-radius: 4px; }
+    .progress-fill { height: 100%; background: #C18041; border-radius: 4px; }
     .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
     .day-box {
       background: #f8f9fa;
@@ -103,8 +103,8 @@
       text-align: center;
       font-size: 0.75rem;
     }
-    .day-box.today { background: #e8e4df; border: 2px solid #c9bfb0; }
-    .day-box .day-name { font-weight: 600; color: #6b5a45; }
+    .day-box.today { background: #C1DBE8; border: 2px solid #9BB9E0; }
+    .day-box .day-name { font-weight: 600; color: #5976AC; }
     .day-box .day-num { color: #888; }
     .backlog-item {
       padding: 12px 0;
@@ -120,15 +120,15 @@
       font-size: 0.65rem;
       padding: 2px 8px;
       border-radius: 12px;
-      background: #e8e4df;
-      color: #6b5a45;
+      background: #C1DBE8;
+      color: #5976AC;
     }
-    .tag.home { background: #d4e5d4; color: #3d5a3d; }
-    .tag.family { background: #e0d4e5; color: #5a3d5a; }
-    .tag.health { background: #d4e0e5; color: #3d4a5a; }
-    .tag.work { background: #e5e0d4; color: #5a4a3d; }
-    .tag.hobby { background: #e5d4d4; color: #5a3d3d; }
-    .tag.systems { background: #d4d4e5; color: #3d3d5a; }
+    .tag.home { background: #C1DBE8; color: #5976AC; }
+    .tag.family { background: #9BB9E0; color: #fff; }
+    .tag.health { background: #C18041; color: #fff; }
+    .tag.work { background: #A89F93; color: #fff; }
+    .tag.hobby { background: #5976AC; color: #fff; }
+    .tag.systems { background: #F4F1E8; color: #5976AC; border: 1px solid #9BB9E0; }
   </style>
 </head>
 <body>
@@ -282,7 +282,7 @@
 
     <div class="card">
       <h2>Note</h2>
-      <p style="color:#8b7355;font-style:italic;">Mike away until Thursday — go easy on yourself</p>
+      <p style="color:#5976AC;font-style:italic;">Mike away until Thursday — go easy on yourself</p>
     </div>
 
     <div class="card">
@@ -331,7 +331,7 @@
       <h2>Habit Tracker — Week of Aug 17</h2>
       <table style="width:100%;font-size:0.8rem;border-collapse:collapse;">
         <thead>
-          <tr style="color:#8b7355;">
+          <tr style="color:#5976AC;">
             <th style="text-align:left;padding:8px 4px;"></th>
             <th style="padding:8px 2px;">M</th>
             <th style="padding:8px 2px;">T</th>
@@ -345,53 +345,53 @@
         <tbody>
           <tr>
             <td style="padding:8px 4px;">Workout</td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wo-1" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wo-2" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wo-3" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wo-4" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wo-5" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wo-6" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wo-7" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wo-1" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wo-2" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wo-3" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wo-4" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wo-5" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wo-6" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wo-7" style="accent-color:#5976AC;"></td>
           </tr>
           <tr>
             <td style="padding:8px 4px;">Walk</td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wk-1" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wk-2" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wk-3" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wk-4" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wk-5" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wk-6" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wk-7" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wk-1" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wk-2" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wk-3" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wk-4" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wk-5" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wk-6" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wk-7" style="accent-color:#5976AC;"></td>
           </tr>
           <tr>
             <td style="padding:8px 4px;">Water 100oz</td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wa-1" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wa-2" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wa-3" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wa-4" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wa-5" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wa-6" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wa-7" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wa-1" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wa-2" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wa-3" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wa-4" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wa-5" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wa-6" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wa-7" style="accent-color:#5976AC;"></td>
           </tr>
           <tr>
             <td style="padding:8px 4px;">AM Skincare</td>
-            <td style="text-align:center;"><input type="checkbox" id="h-am-1" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-am-2" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-am-3" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-am-4" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-am-5" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-am-6" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-am-7" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-am-1" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-am-2" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-am-3" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-am-4" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-am-5" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-am-6" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-am-7" style="accent-color:#5976AC;"></td>
           </tr>
           <tr>
             <td style="padding:8px 4px;">PM Skincare</td>
-            <td style="text-align:center;"><input type="checkbox" id="h-pm-1" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-pm-2" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-pm-3" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-pm-4" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-pm-5" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-pm-6" style="accent-color:#8b7355;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-pm-7" style="accent-color:#8b7355;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-pm-1" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-pm-2" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-pm-3" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-pm-4" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-pm-5" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-pm-6" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-pm-7" style="accent-color:#5976AC;"></td>
           </tr>
         </tbody>
       </table>
@@ -401,7 +401,7 @@
       <h2>Workout Streak</h2>
       <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
         <span style="font-size:0.85rem;">Week 1 of 4</span>
-        <span style="font-size:0.85rem;color:#8b7355;">0/5 days</span>
+        <span style="font-size:0.85rem;color:#5976AC;">0/5 days</span>
       </div>
       <div class="progress-bar">
         <div class="progress-fill" style="width:0%"></div>
@@ -422,7 +422,7 @@
       </div>
       <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
         <span style="font-size:0.85rem;">Progress</span>
-        <span style="font-size:0.85rem;color:#8b7355;" id="weight-progress">0 / 50 lbs lost</span>
+        <span style="font-size:0.85rem;color:#5976AC;" id="weight-progress">0 / 50 lbs lost</span>
       </div>
       <div class="progress-bar">
         <div class="progress-fill" id="weight-bar" style="width:0%"></div>
