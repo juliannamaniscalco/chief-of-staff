@@ -20,6 +20,8 @@ Everything that needs doing, in one place. Review weekly. Pick 1-2 to focus on.
 | Task | Time | Notes |
 |------|------|-------|
 | Put Lucianna's Easter basket away | 5 min | Just do it |
+| Buy Dad a birthday gift | — | Birthday is Sat Aug 22 |
+| Schedule lunch with Dad + Lucianna | — | Quality time |
 
 ---
 
@@ -29,6 +31,7 @@ Everything that needs doing, in one place. Review weekly. Pick 1-2 to focus on.
 |------|----------------|---------------|
 | Cleaning schedule | Keeps getting pushed, need actionable plan | 30 min to plan |
 | Daily checklist system | Tie together workout, cleaning, work priorities | 30 min to set up |
+| Hook up Notion to Claude Code | Sync data, persistent history | 15-20 min setup |
 
 ---
 
