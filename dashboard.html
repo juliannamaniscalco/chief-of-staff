@@ -11,14 +11,14 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #F4F1E8;
+      background: #F7F3EE;
       min-height: 100vh;
       padding: 20px 20px 100px 20px;
       color: #3d3d3d;
     }
     .header { text-align: center; margin-bottom: 20px; }
-    .header h1 { font-size: 1.5rem; font-weight: 600; color: #5976AC; }
-    .header .subtitle { font-size: 0.9rem; color: #A89F93; margin-top: 4px; }
+    .header h1 { font-size: 1.5rem; font-weight: 600; color: #718BA2; }
+    .header .subtitle { font-size: 0.9rem; color: #718BA2; margin-top: 4px; }
     .card {
       background: white;
       border-radius: 16px;
@@ -30,7 +30,7 @@
       font-size: 0.8rem;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      color: #5976AC;
+      color: #718BA2;
       margin-bottom: 12px;
       font-weight: 600;
     }
@@ -38,7 +38,7 @@
       display: flex;
       align-items: flex-start;
       padding: 10px 0;
-      border-bottom: 1px solid #C1DBE8;
+      border-bottom: 1px solid #BDD0E1;
       cursor: pointer;
     }
     .task:last-child { border-bottom: none; }
@@ -47,11 +47,11 @@
       height: 22px;
       margin-right: 12px;
       flex-shrink: 0;
-      accent-color: #5976AC;
+      accent-color: #718BA2;
     }
     .task label { font-size: 1rem; line-height: 1.4; cursor: pointer; flex: 1; }
     .task.checked label { text-decoration: line-through; opacity: 0.5; }
-    .task .time { font-size: 0.8rem; color: #A89F93; display: block; margin-top: 2px; }
+    .task .time { font-size: 0.8rem; color: #718BA2; display: block; margin-top: 2px; }
     .nav {
       position: fixed;
       bottom: 0;
@@ -68,33 +68,33 @@
       flex-direction: column;
       align-items: center;
       font-size: 0.7rem;
-      color: #A89F93;
+      color: #718BA2;
       cursor: pointer;
       padding: 4px 12px;
     }
-    .nav-item.active { color: #5976AC; }
+    .nav-item.active { color: #C1272D; }
     .nav-item svg { width: 24px; height: 24px; margin-bottom: 4px; }
     .page { display: none; }
     .page.active { display: block; }
-    .priority { background: #C1DBE8; border: 2px solid #9BB9E0; }
-    .priority h2 { color: #5976AC; }
+    .priority { background: #BDD0E1; border: 2px solid #718BA2; }
+    .priority h2 { color: #718BA2; }
     .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
     .stat {
-      background: #C1DBE8;
+      background: #BDD0E1;
       border-radius: 12px;
       padding: 16px 8px;
       text-align: center;
     }
-    .stat .number { font-size: 1.5rem; font-weight: 700; color: #5976AC; }
-    .stat .label { font-size: 0.7rem; color: #5976AC; text-transform: uppercase; }
+    .stat .number { font-size: 1.5rem; font-weight: 700; color: #718BA2; }
+    .stat .label { font-size: 0.7rem; color: #718BA2; text-transform: uppercase; }
     .progress-bar {
       height: 8px;
-      background: #C1DBE8;
+      background: #BDD0E1;
       border-radius: 4px;
       overflow: hidden;
       margin-top: 8px;
     }
-    .progress-fill { height: 100%; background: #C18041; border-radius: 4px; }
+    .progress-fill { height: 100%; background: #DB9E32; border-radius: 4px; }
     .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
     .day-box {
       background: white;
@@ -104,32 +104,32 @@
       font-size: 0.75rem;
     }
     .day-box { cursor: pointer; }
-    .day-box.selected { background: #C1DBE8; border: 2px solid #9BB9E0; }
-    .day-box .day-name { font-weight: 600; color: #5976AC; }
-    .day-box .day-num { color: #A89F93; }
+    .day-box.selected { background: #BDD0E1; border: 2px solid #718BA2; }
+    .day-box .day-name { font-weight: 600; color: #718BA2; }
+    .day-box .day-num { color: #718BA2; }
     .backlog-item {
       padding: 12px 0;
-      border-bottom: 1px solid #C1DBE8;
+      border-bottom: 1px solid #BDD0E1;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
     .backlog-item:last-child { border-bottom: none; }
     .backlog-item .title { font-weight: 500; }
-    .backlog-item .meta { font-size: 0.8rem; color: #A89F93; }
+    .backlog-item .meta { font-size: 0.8rem; color: #718BA2; }
     .tag {
       font-size: 0.65rem;
       padding: 2px 8px;
       border-radius: 12px;
-      background: #C1DBE8;
-      color: #5976AC;
+      background: #BDD0E1;
+      color: #718BA2;
     }
-    .tag.home { background: #C1DBE8; color: #5976AC; }
-    .tag.family { background: #9BB9E0; color: #fff; }
-    .tag.health { background: #C18041; color: #fff; }
-    .tag.work { background: #A89F93; color: #fff; }
-    .tag.hobby { background: #5976AC; color: #fff; }
-    .tag.systems { background: #F4F1E8; color: #5976AC; border: 1px solid #9BB9E0; }
+    .tag.home { background: #BDD0E1; color: #718BA2; }
+    .tag.family { background: #C1272D; color: #fff; }
+    .tag.health { background: #DB9E32; color: #fff; }
+    .tag.work { background: #718BA2; color: #fff; }
+    .tag.hobby { background: #BDD0E1; color: #718BA2; }
+    .tag.systems { background: #F7F3EE; color: #718BA2; border: 1px solid #718BA2; }
   </style>
 </head>
 <body>
@@ -140,15 +140,15 @@
       <div class="subtitle">Lucianna turns 8 months</div>
     </div>
 
-    <div class="card priority" style="background:#9BB9E0;border-color:#5976AC;">
+    <div class="card" style="background:#C1272D;border:none;">
       <h2 style="color:#fff;">Appointments</h2>
-      <div class="task" onclick="toggleTask(this)">
-        <input type="checkbox" id="apt1">
-        <label>Lucianna's 8 month pediatrician visit<span class="time">9:00 AM</span></label>
+      <div class="task" onclick="toggleTask(this)" style="border-bottom-color:rgba(255,255,255,0.3);">
+        <input type="checkbox" id="apt1" style="accent-color:#fff;">
+        <label style="color:#fff;">Lucianna's 8 month pediatrician visit<span class="time" style="color:rgba(255,255,255,0.8);">9:00 AM</span></label>
       </div>
       <div class="task" onclick="toggleTask(this)">
-        <input type="checkbox" id="apt2">
-        <label>Take Lucianna's 8 month pictures</label>
+        <input type="checkbox" id="apt2" style="accent-color:#fff;">
+        <label style="color:#fff;">Take Lucianna's 8 month pictures</label>
       </div>
     </div>
 
@@ -284,7 +284,7 @@
     <div class="card" id="day-detail">
       <h2 id="day-detail-title">Monday, Aug 17</h2>
       <div id="day-detail-content">
-        <p style="color:#C18041;font-weight:500;margin-bottom:8px;">9am: Lucianna's pediatrician visit</p>
+        <p style="color:#C1272D;font-weight:500;margin-bottom:8px;">9am: Lucianna's pediatrician visit</p>
         <p style="margin-bottom:8px;"><strong>Workout:</strong> Beginner Full Body Strength · Adrian Williams</p>
         <p style="color:#A89F93;font-style:italic;">Mike away</p>
       </div>
@@ -292,8 +292,8 @@
 
     <div class="card">
       <h2>Notes</h2>
-      <p style="color:#5976AC;font-style:italic;margin-bottom:8px;">Mike away Mon–Wed</p>
-      <p style="color:#C18041;font-weight:500;">Thu: PTO — Sesame Place!</p>
+      <p style="color:#718BA2;font-style:italic;margin-bottom:8px;">Mike away Mon–Wed</p>
+      <p style="color:#C1272D;font-weight:500;">Thu: PTO — Sesame Place!</p>
     </div>
 
     <div class="card">
@@ -342,7 +342,7 @@
       <h2>Habit Tracker — Week of Aug 17</h2>
       <table style="width:100%;font-size:0.8rem;border-collapse:collapse;">
         <thead>
-          <tr style="color:#5976AC;">
+          <tr style="color:#718BA2;">
             <th style="text-align:left;padding:8px 4px;"></th>
             <th style="padding:8px 2px;">M</th>
             <th style="padding:8px 2px;">T</th>
@@ -356,53 +356,53 @@
         <tbody>
           <tr>
             <td style="padding:8px 4px;">Workout</td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wo-1" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wo-2" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wo-3" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wo-4" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wo-5" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wo-6" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wo-7" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wo-1" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wo-2" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wo-3" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wo-4" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wo-5" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wo-6" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wo-7" style="accent-color:#718BA2;"></td>
           </tr>
           <tr>
             <td style="padding:8px 4px;">Walk</td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wk-1" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wk-2" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wk-3" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wk-4" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wk-5" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wk-6" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wk-7" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wk-1" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wk-2" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wk-3" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wk-4" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wk-5" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wk-6" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wk-7" style="accent-color:#718BA2;"></td>
           </tr>
           <tr>
             <td style="padding:8px 4px;">Water 100oz</td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wa-1" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wa-2" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wa-3" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wa-4" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wa-5" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wa-6" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-wa-7" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wa-1" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wa-2" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wa-3" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wa-4" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wa-5" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wa-6" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-wa-7" style="accent-color:#718BA2;"></td>
           </tr>
           <tr>
             <td style="padding:8px 4px;">AM Skincare</td>
-            <td style="text-align:center;"><input type="checkbox" id="h-am-1" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-am-2" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-am-3" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-am-4" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-am-5" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-am-6" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-am-7" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-am-1" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-am-2" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-am-3" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-am-4" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-am-5" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-am-6" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-am-7" style="accent-color:#718BA2;"></td>
           </tr>
           <tr>
             <td style="padding:8px 4px;">PM Skincare</td>
-            <td style="text-align:center;"><input type="checkbox" id="h-pm-1" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-pm-2" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-pm-3" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-pm-4" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-pm-5" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-pm-6" style="accent-color:#5976AC;"></td>
-            <td style="text-align:center;"><input type="checkbox" id="h-pm-7" style="accent-color:#5976AC;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-pm-1" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-pm-2" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-pm-3" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-pm-4" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-pm-5" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-pm-6" style="accent-color:#718BA2;"></td>
+            <td style="text-align:center;"><input type="checkbox" id="h-pm-7" style="accent-color:#718BA2;"></td>
           </tr>
         </tbody>
       </table>
@@ -412,7 +412,7 @@
       <h2>Workout Streak</h2>
       <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
         <span style="font-size:0.85rem;">Week 1 of 4</span>
-        <span style="font-size:0.85rem;color:#5976AC;">0/5 days</span>
+        <span style="font-size:0.85rem;color:#718BA2;">0/5 days</span>
       </div>
       <div class="progress-bar">
         <div class="progress-fill" style="width:0%"></div>
@@ -433,7 +433,7 @@
       </div>
       <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
         <span style="font-size:0.85rem;">Progress</span>
-        <span style="font-size:0.85rem;color:#5976AC;" id="weight-progress">0 / 50 lbs lost</span>
+        <span style="font-size:0.85rem;color:#718BA2;" id="weight-progress">0 / 50 lbs lost</span>
       </div>
       <div class="progress-bar">
         <div class="progress-fill" id="weight-bar" style="width:0%"></div>
@@ -652,13 +652,13 @@
       updateWeight();
     }
     const dayData = {
-      mon: { title: 'Monday, Aug 17', content: '<p style="color:#C18041;font-weight:500;margin-bottom:8px;">9am: Lucianna\'s pediatrician visit</p><p style="margin-bottom:8px;"><strong>Workout:</strong> Beginner Full Body Strength · Adrian Williams</p><p style="color:#A89F93;font-style:italic;">Mike away · Take 8mo pictures</p>', idx: 0 },
+      mon: { title: 'Monday, Aug 17', content: '<p style="color:#C1272D;font-weight:500;margin-bottom:8px;">9am: Lucianna\'s pediatrician visit</p><p style="margin-bottom:8px;"><strong>Workout:</strong> Beginner Full Body Strength · Adrian Williams</p><p style="color:#A89F93;font-style:italic;">Mike away · Take 8mo pictures</p>', idx: 0 },
       tue: { title: 'Tuesday, Aug 18', content: '<p style="margin-bottom:8px;"><strong>Workout:</strong> Upper Body Strength · Robin Arzón</p><p style="color:#A89F93;font-style:italic;">Mike away</p>', idx: 1 },
       wed: { title: 'Wednesday, Aug 19', content: '<p style="margin-bottom:8px;"><strong>Workout:</strong> Low Impact Ride · Christine D\'Ercole</p><p style="color:#A89F93;font-style:italic;">Mike away</p>', idx: 2 },
-      thu: { title: 'Thursday, Aug 20', content: '<p style="color:#C18041;font-weight:500;margin-bottom:8px;">PTO — Sesame Place!</p><p style="margin-bottom:8px;"><strong>Workout:</strong> Rest day (walking counts!)</p><p style="color:#5976AC;">Mike is back!</p>', idx: 3, location: 'pa' },
+      thu: { title: 'Thursday, Aug 20', content: '<p style="color:#C1272D;font-weight:500;margin-bottom:8px;">PTO — Sesame Place!</p><p style="margin-bottom:8px;"><strong>Workout:</strong> Rest day (walking counts!)</p><p style="color:#718BA2;">Mike is back!</p>', idx: 3, location: 'pa' },
       fri: { title: 'Friday, Aug 21', content: '<p style="margin-bottom:8px;"><strong>Workout:</strong> Beginner Yoga · Aditi Shah</p><p style="color:#A89F93;font-style:italic;">End early (3-4pm)</p>', idx: 4 },
       sat: { title: 'Saturday, Aug 22', content: '<p style="margin-bottom:8px;"><strong>Flexible day</strong></p><p style="color:#A89F93;">Optional: Declutter session?</p>', idx: 5 },
-      sun: { title: 'Sunday, Aug 23', content: '<p style="color:#C18041;font-weight:500;margin-bottom:8px;">Batch prep day</p><p style="margin-bottom:8px;">Egg muffins, shredded chicken, hard boiled eggs</p><p style="color:#A89F93;">Wash sheets</p>', idx: 6 }
+      sun: { title: 'Sunday, Aug 23', content: '<p style="color:#C1272D;font-weight:500;margin-bottom:8px;">Batch prep day</p><p style="margin-bottom:8px;">Egg muffins, shredded chicken, hard boiled eggs</p><p style="color:#A89F93;">Wash sheets</p>', idx: 6 }
     };
     let weatherData = { nj: null, pa: null };
     async function fetchWeather() {
