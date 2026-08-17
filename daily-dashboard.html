@@ -412,6 +412,7 @@ function seedData() {
   db.run('INSERT INTO tasks(title,time_note,category,specific_date,sort_order)VALUES(?,?,?,?,?)',["Take Lucianna's 8 month pictures",null,'appointment','2026-08-17',1]);
   db.run('INSERT INTO tasks(title,time_note,category,specific_date,sort_order)VALUES(?,?,?,?,?)',['Eyebrow appt @ Mood','2:45pm','appointment','2026-08-18',0]);
   db.run('INSERT INTO tasks(title,time_note,category,specific_date,sort_order)VALUES(?,?,?,?,?)',['Therapy','7:30pm','appointment','2026-08-18',1]);
+  db.run('INSERT INTO tasks(title,time_note,category,specific_date,sort_order)VALUES(?,?,?,?,?)',["Dad's Birthday Lunch",'1:00 PM','appointment','2026-08-22',0]);
   // Week notes
   db.run('INSERT INTO notes(date,subtitle,note)VALUES(?,?,?)',['2026-08-17','Lucianna turns 8 months','<p style="color:#C1272D;font-weight:500;margin-bottom:8px;">9am: Pediatrician visit</p><p style="margin-bottom:8px;"><strong>Workout:</strong> Beginner Full Body Strength · Adrian Williams</p><p style="color:#A89F93;font-style:italic;">Mike away</p>']);
   db.run('INSERT INTO notes(date,subtitle,note)VALUES(?,?,?)',['2026-08-18',null,'<p style="color:#C1272D;font-weight:500;margin-bottom:8px;">2:45pm: Eyebrow appt</p><p style="color:#C1272D;font-weight:500;margin-bottom:8px;">7:30pm: Therapy</p><p style="margin-bottom:8px;"><strong>Workout:</strong> Upper Body Strength · Robin Arzón</p><p style="color:#A89F93;font-style:italic;">Mike away</p>']);
