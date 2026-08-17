@@ -1,7 +1,7 @@
 {
   "name": "Chief of Staff",
   "short_name": "CoS",
-  "start_url": "/daily-dashboard.html",
+  "start_url": "/chief-of-staff/daily-dashboard.html",
   "display": "standalone",
   "background_color": "#f5f3f0",
   "theme_color": "#8b7355",
