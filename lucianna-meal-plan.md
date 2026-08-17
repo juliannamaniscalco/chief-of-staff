@@ -76,6 +76,72 @@ Hidden veggies! Freezer friendly.
 
 ---
 
+### Cottage Cheese Egg Bites
+Protein-packed breakfast. Freezer friendly.
+
+**Ingredients:**
+- 4 eggs
+- 1/2 cup cottage cheese
+- 1/4 cup sautéed mushrooms (optional)
+- 1/4 cup grated zucchini, moisture squeezed out (optional)
+- Shredded cheese (optional)
+
+**Directions:**
+1. Preheat oven to 350°F
+2. Blend or whisk eggs + cottage cheese
+3. Stir in veggies
+4. Pour into greased mini muffin tin
+5. Bake 18-22 minutes until set
+
+**Storage:** Fridge 3-4 days, Freezer up to 2 months
+
+---
+
+### Potato Veggie Tots (with Edamame)
+Hidden protein + veggies. Freezer friendly.
+
+**Ingredients:**
+- 1 cup mashed potato + 1 cup mashed sweet potato
+- 1/2 cup cooked edamame (lightly mashed)
+- 1/2 cup finely chopped veggies (broccoli, carrot, or zucchini)
+- 1 egg
+- 3/4 cup breadcrumbs
+- 1-2 tbsp olive oil
+- Shredded cheese (optional)
+
+**Directions:**
+1. Preheat oven to 400°F
+2. Mix all ingredients until combined
+3. Form into small tots or patties
+4. Place on lined baking sheet
+5. Bake 20-25 minutes, flipping halfway
+
+**Storage:** Fridge 3-4 days, Freezer up to 2 months
+
+---
+
+### Turkey Meatballs (Spinach + Onion)
+Easy protein. Freezer friendly.
+
+**Ingredients:**
+- 1 lb ground turkey
+- 1 egg
+- 1/4 cup breadcrumbs
+- Handful finely chopped spinach
+- 2-3 tbsp finely grated or minced onion
+- 1-2 tbsp olive oil
+- Parmesan (optional)
+
+**Directions:**
+1. Preheat oven to 375°F
+2. Mix until just combined
+3. Form small meatballs
+4. Bake 16-18 minutes until cooked through
+
+**Storage:** Fridge 3-4 days, Freezer up to 2 months
+
+---
+
 ## Meal Ideas to Try
 
 ### Breakfast
