@@ -652,21 +652,57 @@
       updateWeight();
     }
     const dayData = {
-      mon: { title: 'Monday, Aug 17', content: '<p style="color:#C18041;font-weight:500;margin-bottom:8px;">9am: Lucianna\'s pediatrician visit</p><p style="margin-bottom:8px;"><strong>Workout:</strong> Beginner Full Body Strength · Adrian Williams</p><p style="color:#A89F93;font-style:italic;">Mike away · Take 8mo pictures</p>' },
-      tue: { title: 'Tuesday, Aug 18', content: '<p style="margin-bottom:8px;"><strong>Workout:</strong> Upper Body Strength · Robin Arzón</p><p style="color:#A89F93;font-style:italic;">Mike away</p>' },
-      wed: { title: 'Wednesday, Aug 19', content: '<p style="margin-bottom:8px;"><strong>Workout:</strong> Low Impact Ride · Christine D\'Ercole</p><p style="color:#A89F93;font-style:italic;">Mike away</p>' },
-      thu: { title: 'Thursday, Aug 20', content: '<p style="color:#C18041;font-weight:500;margin-bottom:8px;">PTO — Sesame Place!</p><p style="margin-bottom:8px;"><strong>Workout:</strong> Rest day (walking counts!)</p><p style="color:#5976AC;">Mike is back!</p>' },
-      fri: { title: 'Friday, Aug 21', content: '<p style="margin-bottom:8px;"><strong>Workout:</strong> Beginner Yoga · Aditi Shah</p><p style="color:#A89F93;font-style:italic;">End early (3-4pm)</p>' },
-      sat: { title: 'Saturday, Aug 22', content: '<p style="margin-bottom:8px;"><strong>Flexible day</strong></p><p style="color:#A89F93;">Optional: Declutter session?</p>' },
-      sun: { title: 'Sunday, Aug 23', content: '<p style="color:#C18041;font-weight:500;margin-bottom:8px;">Batch prep day</p><p style="margin-bottom:8px;">Egg muffins, shredded chicken, hard boiled eggs</p><p style="color:#A89F93;">Wash sheets</p>' }
+      mon: { title: 'Monday, Aug 17', content: '<p style="color:#C18041;font-weight:500;margin-bottom:8px;">9am: Lucianna\'s pediatrician visit</p><p style="margin-bottom:8px;"><strong>Workout:</strong> Beginner Full Body Strength · Adrian Williams</p><p style="color:#A89F93;font-style:italic;">Mike away · Take 8mo pictures</p>', idx: 0 },
+      tue: { title: 'Tuesday, Aug 18', content: '<p style="margin-bottom:8px;"><strong>Workout:</strong> Upper Body Strength · Robin Arzón</p><p style="color:#A89F93;font-style:italic;">Mike away</p>', idx: 1 },
+      wed: { title: 'Wednesday, Aug 19', content: '<p style="margin-bottom:8px;"><strong>Workout:</strong> Low Impact Ride · Christine D\'Ercole</p><p style="color:#A89F93;font-style:italic;">Mike away</p>', idx: 2 },
+      thu: { title: 'Thursday, Aug 20', content: '<p style="color:#C18041;font-weight:500;margin-bottom:8px;">PTO — Sesame Place!</p><p style="margin-bottom:8px;"><strong>Workout:</strong> Rest day (walking counts!)</p><p style="color:#5976AC;">Mike is back!</p>', idx: 3, location: 'pa' },
+      fri: { title: 'Friday, Aug 21', content: '<p style="margin-bottom:8px;"><strong>Workout:</strong> Beginner Yoga · Aditi Shah</p><p style="color:#A89F93;font-style:italic;">End early (3-4pm)</p>', idx: 4 },
+      sat: { title: 'Saturday, Aug 22', content: '<p style="margin-bottom:8px;"><strong>Flexible day</strong></p><p style="color:#A89F93;">Optional: Declutter session?</p>', idx: 5 },
+      sun: { title: 'Sunday, Aug 23', content: '<p style="color:#C18041;font-weight:500;margin-bottom:8px;">Batch prep day</p><p style="margin-bottom:8px;">Egg muffins, shredded chicken, hard boiled eggs</p><p style="color:#A89F93;">Wash sheets</p>', idx: 6 }
     };
+    let weatherData = { nj: null, pa: null };
+    async function fetchWeather() {
+      try {
+        const njRes = await fetch('https://api.open-meteo.com/v1/forecast?latitude=40.27&longitude=-74.03&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode&temperature_unit=fahrenheit&timezone=America/New_York');
+        const njData = await njRes.json();
+        weatherData.nj = njData.daily;
+        const paRes = await fetch('https://api.open-meteo.com/v1/forecast?latitude=40.17&longitude=-74.92&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode&temperature_unit=fahrenheit&timezone=America/New_York');
+        const paData = await paRes.json();
+        weatherData.pa = paData.daily;
+      } catch(e) { console.log('Weather fetch failed'); }
+    }
+    function getWeatherIcon(code) {
+      if (code <= 1) return '☀️';
+      if (code <= 3) return '⛅';
+      if (code <= 48) return '☁️';
+      if (code <= 67) return '🌧️';
+      if (code <= 77) return '🌨️';
+      if (code <= 82) return '🌧️';
+      if (code <= 86) return '🌨️';
+      return '⛈️';
+    }
+    function getWeatherHtml(day) {
+      const loc = dayData[day].location === 'pa' ? 'pa' : 'nj';
+      const data = weatherData[loc];
+      if (!data) return '';
+      const idx = dayData[day].idx;
+      const hi = Math.round(data.temperature_2m_max[idx]);
+      const lo = Math.round(data.temperature_2m_min[idx]);
+      const rain = data.precipitation_probability_max[idx];
+      const icon = getWeatherIcon(data.weathercode[idx]);
+      return '<p style="margin-top:12px;padding-top:12px;border-top:1px solid #C1DBE8;font-size:1.1rem;">' + icon + ' <strong>' + hi + '°</strong> / ' + lo + '°' + (rain > 20 ? ' · ' + rain + '% rain' : '') + '</p>';
+    }
     function selectDay(day) {
       document.querySelectorAll('.day-box').forEach(d => d.classList.remove('selected'));
       event.currentTarget.classList.add('selected');
       document.getElementById('day-detail-title').textContent = dayData[day].title;
-      document.getElementById('day-detail-content').innerHTML = dayData[day].content;
+      document.getElementById('day-detail-content').innerHTML = dayData[day].content + getWeatherHtml(day);
     }
-    document.addEventListener('DOMContentLoaded', () => { loadState(); loadWeight(); });
+    document.addEventListener('DOMContentLoaded', () => {
+      loadState();
+      loadWeight();
+      fetchWeather().then(() => selectDay('mon'));
+    });
   </script>
 </body>
 </html>
