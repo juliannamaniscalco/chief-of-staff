@@ -36,6 +36,7 @@ Everything that needs doing, in one place. Review weekly. Pick 1-2 to focus on.
 
 | Task | Frequency | Notes |
 |------|-----------|-------|
+| Update Skylight calendar | Daily | Keep Mike and family in sync |
 | Wash and change sheets | Weekly | Pick a day and stick to it |
 
 ---
